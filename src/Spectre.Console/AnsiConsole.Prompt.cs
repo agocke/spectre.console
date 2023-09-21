@@ -27,7 +27,7 @@ public static partial class AnsiConsole
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="prompt">The prompt markup text.</param>
     /// <returns>The prompt input result.</returns>
-    public static T Ask<T>(string prompt)
+    public static T Ask<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string prompt)
     {
         return new TextPrompt<T>(prompt).Show(Console);
     }
@@ -39,7 +39,7 @@ public static partial class AnsiConsole
     /// <param name="prompt">The prompt markup text.</param>
     /// <param name="defaultValue">The default value.</param>
     /// <returns>The prompt input result.</returns>
-    public static T Ask<T>(string prompt, T defaultValue)
+    public static T Ask<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string prompt, T defaultValue)
     {
         return new TextPrompt<T>(prompt)
             .DefaultValue(defaultValue)

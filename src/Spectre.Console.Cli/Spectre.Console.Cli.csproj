@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <NoWarn>SA1633</NoWarn>
+    <EnableAotAnalyzer>true</EnableAotAnalyzer>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
   </PropertyGroup>
 
   <ItemGroup>

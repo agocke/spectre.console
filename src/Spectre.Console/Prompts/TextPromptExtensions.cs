@@ -11,7 +11,7 @@ public static class TextPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> AllowEmpty<T>(this TextPrompt<T> obj)
+    public static TextPrompt<T> AllowEmpty<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj)
     {
         if (obj is null)
         {
@@ -29,7 +29,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="style">The prompt style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> PromptStyle<T>(this TextPrompt<T> obj, Style style)
+    public static TextPrompt<T> PromptStyle<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, Style style)
     {
         if (obj is null)
         {
@@ -52,7 +52,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="show">Whether or not choices should be visible.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ShowChoices<T>(this TextPrompt<T> obj, bool show)
+    public static TextPrompt<T> ShowChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, bool show)
     {
         if (obj is null)
         {
@@ -69,7 +69,7 @@ public static class TextPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ShowChoices<T>(this TextPrompt<T> obj)
+    public static TextPrompt<T> ShowChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj)
     {
         return ShowChoices(obj, true);
     }
@@ -80,7 +80,7 @@ public static class TextPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> HideChoices<T>(this TextPrompt<T> obj)
+    public static TextPrompt<T> HideChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj)
     {
         return ShowChoices(obj, false);
     }
@@ -92,7 +92,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="show">Whether or not the default value should be visible.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ShowDefaultValue<T>(this TextPrompt<T> obj, bool show)
+    public static TextPrompt<T> ShowDefaultValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, bool show)
     {
         if (obj is null)
         {
@@ -109,7 +109,7 @@ public static class TextPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ShowDefaultValue<T>(this TextPrompt<T> obj)
+    public static TextPrompt<T> ShowDefaultValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj)
     {
         return ShowDefaultValue(obj, true);
     }
@@ -120,7 +120,7 @@ public static class TextPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> HideDefaultValue<T>(this TextPrompt<T> obj)
+    public static TextPrompt<T> HideDefaultValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj)
     {
         return ShowDefaultValue(obj, false);
     }
@@ -132,7 +132,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="message">The validation error message.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ValidationErrorMessage<T>(this TextPrompt<T> obj, string message)
+    public static TextPrompt<T> ValidationErrorMessage<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, string message)
     {
         if (obj is null)
         {
@@ -150,7 +150,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="message">The "invalid choice" message.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> InvalidChoiceMessage<T>(this TextPrompt<T> obj, string message)
+    public static TextPrompt<T> InvalidChoiceMessage<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, string message)
     {
         if (obj is null)
         {
@@ -168,7 +168,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="value">The default value.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> DefaultValue<T>(this TextPrompt<T> obj, T value)
+    public static TextPrompt<T> DefaultValue<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, T value)
     {
         if (obj is null)
         {
@@ -187,7 +187,7 @@ public static class TextPromptExtensions
     /// <param name="validator">The validation criteria.</param>
     /// <param name="message">The validation error message.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T, bool> validator, string? message = null)
+    public static TextPrompt<T> Validate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, Func<T, bool> validator, string? message = null)
     {
         if (obj is null)
         {
@@ -214,7 +214,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="validator">The validation criteria.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Validate<T>(this TextPrompt<T> obj, Func<T, ValidationResult> validator)
+    public static TextPrompt<T> Validate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, Func<T, ValidationResult> validator)
     {
         if (obj is null)
         {
@@ -233,7 +233,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="choice">The choice to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> AddChoice<T>(this TextPrompt<T> obj, T choice)
+    public static TextPrompt<T> AddChoice<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, T choice)
     {
         if (obj is null)
         {
@@ -251,7 +251,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> AddChoices<T>(this TextPrompt<T> obj, IEnumerable<T> choices)
+    public static TextPrompt<T> AddChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, IEnumerable<T> choices)
     {
         if (obj is null)
         {
@@ -277,7 +277,7 @@ public static class TextPromptExtensions
     /// <typeparam name="T">The prompt type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Secret<T>(this TextPrompt<T> obj)
+    public static TextPrompt<T> Secret<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj)
     {
         if (obj is null)
         {
@@ -295,7 +295,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="mask">The masking character to use for the secret.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> Secret<T>(this TextPrompt<T> obj, char? mask)
+    public static TextPrompt<T> Secret<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, char? mask)
     {
         if (obj is null)
         {
@@ -314,7 +314,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="displaySelector">The function to get a display string for a given choice.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> WithConverter<T>(this TextPrompt<T> obj, Func<T, string>? displaySelector)
+    public static TextPrompt<T> WithConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, Func<T, string>? displaySelector)
     {
         if (obj is null)
         {
@@ -332,7 +332,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="style">The default value style.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> DefaultValueStyle<T>(this TextPrompt<T> obj, Style style)
+    public static TextPrompt<T> DefaultValueStyle<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, Style style)
     {
         if (obj is null)
         {
@@ -355,7 +355,7 @@ public static class TextPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="style">The style to use for displaying the choices.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static TextPrompt<T> ChoicesStyle<T>(this TextPrompt<T> obj, Style style)
+    public static TextPrompt<T> ChoicesStyle<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this TextPrompt<T> obj, Style style)
     {
         if (obj is null)
         {

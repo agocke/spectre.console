@@ -10,6 +10,7 @@ public static partial class AnsiConsole
     /// </summary>
     /// <param name="exception">The exception to write to the console.</param>
     /// <param name="format">The exception format options.</param>
+    [RequiresUnreferencedCode("Compiler-generated methods in the stack trace may not be reflection-preserved.")]
     public static void WriteException(Exception exception, ExceptionFormats format = ExceptionFormats.Default)
     {
         Console.WriteException(exception, format);
@@ -20,6 +21,7 @@ public static partial class AnsiConsole
     /// </summary>
     /// <param name="exception">The exception to write to the console.</param>
     /// <param name="settings">The exception settings.</param>
+    [RequiresUnreferencedCode("Compiler-generated methods in the stack trace may not be reflection-preserved.")]
     public static void WriteException(Exception exception, ExceptionSettings settings)
     {
         Console.WriteException(exception, settings);

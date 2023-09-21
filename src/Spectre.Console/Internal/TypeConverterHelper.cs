@@ -2,7 +2,7 @@ namespace Spectre.Console;
 
 internal static class TypeConverterHelper
 {
-    public static string ConvertToString<T>(T input)
+    public static string ConvertToString<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T input)
     {
         var result = GetTypeConverter<T>().ConvertToInvariantString(input);
         if (result == null)
@@ -13,7 +13,7 @@ internal static class TypeConverterHelper
         return result;
     }
 
-    public static bool TryConvertFromString<T>(string input, [MaybeNull] out T? result)
+    public static bool TryConvertFromString<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string input, [MaybeNull] out T? result)
     {
         try
         {
@@ -27,7 +27,8 @@ internal static class TypeConverterHelper
         }
     }
 
-    public static bool TryConvertFromStringWithCulture<T>(string input, CultureInfo? info, [MaybeNull] out T? result)
+    public static bool TryConvertFromStringWithCulture<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(string input, CultureInfo? info, [MaybeNull] out T? result)
     {
         try
         {
@@ -49,9 +50,15 @@ internal static class TypeConverterHelper
         }
     }
 
-    public static TypeConverter GetTypeConverter<T>()
+    // Hack: use the value of BuiltInComInterop as a proxy for trimming being enabled. This can be fixed
+    // by either creating a custom feature switch (https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md)
+    // or using a public `IsUnreferencedCodeAvailable` feature switch from the runtime when it is available
+    internal static bool GenericTypeConvertersSupported =>
+        AppContext.TryGetSwitch("System.Runtime.InteropServices.BuiltInComInterop.IsSupported", out var enabled) && enabled;
+
+    public static TypeConverter GetTypeConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
     {
-        var converter = TypeDescriptor.GetConverter(typeof(T));
+        var converter = GetCheckedConverter();
         if (converter != null)
         {
             return converter;
@@ -72,5 +79,17 @@ internal static class TypeConverterHelper
         }
 
         throw new InvalidOperationException("Could not find type converter");
+
+        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "GetConverter is guaraded by a feature switch")]
+        static TypeConverter? GetCheckedConverter()
+        {
+            if (!GenericTypeConvertersSupported && typeof(T).IsGenericType)
+            {
+                throw new InvalidOperationException("Generic type converters are not supported when trimming is enabled.");
+            }
+
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            return converter;
+        }
     }
 }

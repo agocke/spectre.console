@@ -2,6 +2,7 @@ namespace Spectre.Console;
 
 internal static class ExceptionFormatter
 {
+    [RequiresUnreferencedCode("Compiler-generated methods in the stack trace may not be reflection-preserved.")]
     public static IRenderable Format(Exception exception, ExceptionSettings settings)
     {
         if (exception is null)
@@ -12,6 +13,7 @@ internal static class ExceptionFormatter
         return GetException(exception, settings);
     }
 
+    [RequiresUnreferencedCode("Compiler-generated methods in the stack trace may not be reflection-preserved.")]
     private static IRenderable GetException(Exception exception, ExceptionSettings settings)
     {
         if (exception is null)
@@ -33,6 +35,7 @@ internal static class ExceptionFormatter
         return new Markup(string.Concat(type, ": ", message));
     }
 
+    [RequiresUnreferencedCode("Compiler-generated methods in the stack trace may not be reflection-preserved.")]
     private static Grid GetStackFrames(Exception ex, ExceptionSettings settings)
     {
         var styles = settings.Style;
@@ -183,6 +186,8 @@ internal static class ExceptionFormatter
         return builder.ToString();
     }
 
+    [UnconditionalSuppressMessage("Trimming", "IL2026",
+        Justification = "This code uses reflection on the StackFrame, but handles the case where it's not available.")]
     private static bool ShowInStackTrace(StackFrame frame)
     {
         // NET 6 has an attribute of StackTraceHiddenAttribute that we can use to clean up the stack trace
@@ -355,6 +360,7 @@ internal static class ExceptionFormatter
         return false;
     }
 
+    [RequiresUnreferencedCode("Compiler-generated types may not be reflection-preserved.")]
     private static string GetMethodName(ref MethodBase method, out bool isAsync)
     {
         var declaringType = method.DeclaringType;
@@ -393,6 +399,7 @@ internal static class ExceptionFormatter
         return builder.ToString();
     }
 
+    [RequiresUnreferencedCode("Compiler-generated types may not be reflection-preserved")]
     private static bool TryResolveStateMachineMethod(ref MethodBase method, out Type declaringType)
     {
         // https://github.com/dotnet/runtime/blob/v6.0.0/src/libraries/System.Private.CoreLib/src/System/Diagnostics/StackTrace.cs#L400-L455
