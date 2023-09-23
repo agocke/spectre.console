@@ -50,12 +50,6 @@ internal static class TypeConverterHelper
         }
     }
 
-    // Hack: use the value of BuiltInComInterop as a proxy for trimming being enabled. This can be fixed
-    // by either creating a custom feature switch (https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md)
-    // or using a public `IsUnreferencedCodeAvailable` feature switch from the runtime when it is available
-    internal static bool GenericTypeConvertersSupported =>
-        AppContext.TryGetSwitch("System.Runtime.InteropServices.BuiltInComInterop.IsSupported", out var enabled) && enabled;
-
     public static TypeConverter GetTypeConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>()
     {
         var converter = GetCheckedConverter();
@@ -83,13 +77,20 @@ internal static class TypeConverterHelper
         [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "GetConverter is guaraded by a feature switch")]
         static TypeConverter? GetCheckedConverter()
         {
-            if (!GenericTypeConvertersSupported && typeof(T).IsGenericType)
+            if (!GenericTypeConvertersSupported() && typeof(T).IsGenericType)
             {
                 throw new InvalidOperationException("Generic type converters are not supported when trimming is enabled.");
             }
 
             var converter = TypeDescriptor.GetConverter(typeof(T));
             return converter;
+
+            // Hack: use the value of BuiltInComInterop as a proxy for trimming being enabled. This can be fixed
+            // by either creating a custom feature switch (https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md)
+            // or using a public `IsUnreferencedCodeAvailable` feature switch from the runtime when it is added.
+            // See https://github.com/dotnet/runtime/issues/92541
+            static bool GenericTypeConvertersSupported() =>
+                AppContext.TryGetSwitch("System.Runtime.InteropServices.BuiltInComInterop.IsSupported", out var enabled) && enabled;
         }
     }
 }

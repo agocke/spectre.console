@@ -12,7 +12,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="mode">The selection mode.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> Mode<T>(this MultiSelectionPrompt<T> obj, SelectionMode mode)
+    public static MultiSelectionPrompt<T> Mode<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, SelectionMode mode)
         where T : notnull
     {
         if (obj is null)
@@ -32,7 +32,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="choice">The choice to add.</param>
     /// <param name="configurator">The configurator for the choice.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> AddChoices<T>(this MultiSelectionPrompt<T> obj, T choice, Action<IMultiSelectionItem<T>> configurator)
+    public static MultiSelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, T choice, Action<IMultiSelectionItem<T>> configurator)
         where T : notnull
     {
         if (obj is null)
@@ -58,7 +58,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> AddChoices<T>(this MultiSelectionPrompt<T> obj, params T[] choices)
+    public static MultiSelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, params T[] choices)
         where T : notnull
     {
         if (obj is null)
@@ -81,7 +81,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> AddChoices<T>(this MultiSelectionPrompt<T> obj, IEnumerable<T> choices)
+    public static MultiSelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, IEnumerable<T> choices)
         where T : notnull
     {
         if (obj is null)
@@ -105,7 +105,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="group">The group.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> AddChoiceGroup<T>(this MultiSelectionPrompt<T> obj, T group, IEnumerable<T> choices)
+    public static MultiSelectionPrompt<T> AddChoiceGroup<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, T group, IEnumerable<T> choices)
         where T : notnull
     {
         if (obj is null)
@@ -130,7 +130,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="group">The group.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> AddChoiceGroup<T>(this MultiSelectionPrompt<T> obj, T group, params T[] choices)
+    public static MultiSelectionPrompt<T> AddChoiceGroup<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, T group, params T[] choices)
         where T : notnull
     {
         if (obj is null)
@@ -154,7 +154,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="item">The item to select.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> Select<T>(this MultiSelectionPrompt<T> obj, T item)
+    public static MultiSelectionPrompt<T> Select<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, T item)
         where T : notnull
     {
         if (obj is null)
@@ -175,7 +175,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="title">The title markup text.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> Title<T>(this MultiSelectionPrompt<T> obj, string? title)
+    public static MultiSelectionPrompt<T> Title<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, string? title)
         where T : notnull
     {
         if (obj is null)
@@ -194,7 +194,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="pageSize">The number of choices that are displayed to the user.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> PageSize<T>(this MultiSelectionPrompt<T> obj, int pageSize)
+    public static MultiSelectionPrompt<T> PageSize<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, int pageSize)
         where T : notnull
     {
         if (obj is null)
@@ -218,7 +218,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="shouldWrap">Whether the selection should wrap around.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> WrapAround<T>(this MultiSelectionPrompt<T> obj, bool shouldWrap = true)
+    public static MultiSelectionPrompt<T> WrapAround<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, bool shouldWrap = true)
         where T : notnull
     {
         if (obj is null)
@@ -237,7 +237,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="highlightStyle">The highlight style of the selected choice.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> HighlightStyle<T>(this MultiSelectionPrompt<T> obj, Style highlightStyle)
+    public static MultiSelectionPrompt<T> HighlightStyle<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, Style highlightStyle)
         where T : notnull
     {
         if (obj is null)
@@ -256,7 +256,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="text">The text to display.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> MoreChoicesText<T>(this MultiSelectionPrompt<T> obj, string? text)
+    public static MultiSelectionPrompt<T> MoreChoicesText<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, string? text)
         where T : notnull
     {
         if (obj is null)
@@ -275,7 +275,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="text">The text to display.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> InstructionsText<T>(this MultiSelectionPrompt<T> obj, string? text)
+    public static MultiSelectionPrompt<T> InstructionsText<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, string? text)
         where T : notnull
     {
         if (obj is null)
@@ -293,7 +293,7 @@ public static class MultiSelectionPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> NotRequired<T>(this MultiSelectionPrompt<T> obj)
+    public static MultiSelectionPrompt<T> NotRequired<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj)
         where T : notnull
     {
         return Required(obj, false);
@@ -305,7 +305,7 @@ public static class MultiSelectionPromptExtensions
     /// <typeparam name="T">The prompt result type.</typeparam>
     /// <param name="obj">The prompt.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> Required<T>(this MultiSelectionPrompt<T> obj)
+    public static MultiSelectionPrompt<T> Required<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj)
         where T : notnull
     {
         return Required(obj, true);
@@ -318,7 +318,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="required">Whether or not at least one choice must be selected.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> Required<T>(this MultiSelectionPrompt<T> obj, bool required)
+    public static MultiSelectionPrompt<T> Required<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, bool required)
         where T : notnull
     {
         if (obj is null)
@@ -337,7 +337,7 @@ public static class MultiSelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="displaySelector">The function to get a display string for a given choice.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static MultiSelectionPrompt<T> UseConverter<T>(this MultiSelectionPrompt<T> obj, Func<T, string>? displaySelector)
+    public static MultiSelectionPrompt<T> UseConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this MultiSelectionPrompt<T> obj, Func<T, string>? displaySelector)
         where T : notnull
     {
         if (obj is null)

@@ -4,7 +4,7 @@ namespace Spectre.Console;
 /// Represents a multi selection list prompt.
 /// </summary>
 /// <typeparam name="T">The prompt result type.</typeparam>
-public sealed class MultiSelectionPrompt<T> : IPrompt<List<T>>, IListPromptStrategy<T>
+public sealed class MultiSelectionPrompt<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T> : IPrompt<List<T>>, IListPromptStrategy<T>
     where T : notnull
 {
     /// <summary>

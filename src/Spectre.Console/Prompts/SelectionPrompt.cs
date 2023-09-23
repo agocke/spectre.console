@@ -4,8 +4,7 @@ namespace Spectre.Console;
 /// Represents a single list prompt.
 /// </summary>
 /// <typeparam name="T">The prompt result type.</typeparam>
-[RequiresUnreferencedCode("TypeConverter is not trim compatible")]
-public sealed class SelectionPrompt<T> : IPrompt<T>, IListPromptStrategy<T>
+public sealed class SelectionPrompt<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T> : IPrompt<T>, IListPromptStrategy<T>
     where T : notnull
 {
     private readonly ListPromptTree<T> _tree;
