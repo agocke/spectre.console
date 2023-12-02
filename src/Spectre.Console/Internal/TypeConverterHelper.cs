@@ -2,6 +2,9 @@ namespace Spectre.Console;
 
 internal static class TypeConverterHelper
 {
+    internal static bool AreGenericTypeConvertersSupported =>
+        !AppContext.TryGetSwitch("Spectre.Console.TypeConverterHelper.AreGenericTypeConvertersSupported", out var enabled) || enabled;
+
     public static string ConvertToString<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(T input)
     {
         var result = GetTypeConverter<T>().ConvertToInvariantString(input);
@@ -74,23 +77,16 @@ internal static class TypeConverterHelper
 
         throw new InvalidOperationException("Could not find type converter");
 
-        [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "GetConverter is guaraded by a feature switch")]
+        [UnconditionalSuppressMessage("Trimming", "IL2026:RequiresUnreferencedCode", Justification = "TypeConverter is only used for non-generic types.")]
         static TypeConverter? GetCheckedConverter()
         {
-            if (!GenericTypeConvertersSupported() && typeof(T).IsGenericType)
+            if (!AreGenericTypeConvertersSupported && typeof(T).IsGenericType)
             {
                 throw new InvalidOperationException("Generic type converters are not supported when trimming is enabled.");
             }
 
             var converter = TypeDescriptor.GetConverter(typeof(T));
             return converter;
-
-            // Hack: use the value of BuiltInComInterop as a proxy for trimming being enabled. This can be fixed
-            // by either creating a custom feature switch (https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md)
-            // or using a public `IsUnreferencedCodeAvailable` feature switch from the runtime when it is added.
-            // See https://github.com/dotnet/runtime/issues/92541
-            static bool GenericTypeConvertersSupported() =>
-                AppContext.TryGetSwitch("System.Runtime.InteropServices.BuiltInComInterop.IsSupported", out var enabled) && enabled;
         }
     }
 }
