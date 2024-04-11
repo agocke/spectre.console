@@ -26,6 +26,9 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
     public bool IsFlag => ParameterKind == ParameterKind.Flag;
 
     protected CommandParameter(
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+            | DynamicallyAccessedMemberTypes.Interfaces)]
         Type parameterType, ParameterKind parameterKind, PropertyInfo property,
         string? description, TypeConverterAttribute? converter,
         DefaultValueAttribute? defaultValue,

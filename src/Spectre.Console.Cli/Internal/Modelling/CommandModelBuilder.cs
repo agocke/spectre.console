@@ -172,6 +172,7 @@ internal static class CommandModelBuilder
         return result;
     }
 
+    [RequiresUnreferencedCode("Complex reflection.")]
     private static CommandOption BuildOptionParameter(PropertyInfo property, CommandOptionAttribute attribute)
     {
         var description = property.GetCustomAttribute<DescriptionAttribute>();
@@ -194,6 +195,7 @@ internal static class CommandModelBuilder
             attribute.ValueIsOptional);
     }
 
+    [RequiresUnreferencedCode("Complex reflection.")]
     private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
     {
         var description = property.GetCustomAttribute<DescriptionAttribute>();

@@ -2,6 +2,9 @@ namespace Spectre.Console.Cli;
 
 internal static class ConfigurationHelper
 {
+    [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+    [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2063:AnnotationMismatch",
+        Justification = "ICommand<T> is annotated as requiring PublicProperties. The ICommand annotation and this methods return annotation must be in sync.")]
     public static Type? GetSettingsType(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] Type commandType)
     {

@@ -6,6 +6,9 @@ internal sealed class CommandArgument : CommandParameter, ICommandArgument
     public int Position { get; set; }
 
     public CommandArgument(
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+            | DynamicallyAccessedMemberTypes.Interfaces)]
         Type parameterType, ParameterKind parameterKind, PropertyInfo property, string? description,
         TypeConverterAttribute? converter, DefaultValueAttribute? defaultValue,
         CommandArgumentAttribute argument, ParameterValueProviderAttribute? valueProvider,

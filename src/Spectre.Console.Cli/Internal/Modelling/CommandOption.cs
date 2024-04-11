@@ -9,6 +9,9 @@ internal sealed class CommandOption : CommandParameter, ICommandOption
     public bool IsShadowed { get; set; }
 
     public CommandOption(
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+            | DynamicallyAccessedMemberTypes.Interfaces)]
         Type parameterType, ParameterKind parameterKind, PropertyInfo property, string? description,
         TypeConverterAttribute? converter, PairDeconstructorAttribute? deconstructor,
         CommandOptionAttribute optionAttribute, ParameterValueProviderAttribute? valueProvider,

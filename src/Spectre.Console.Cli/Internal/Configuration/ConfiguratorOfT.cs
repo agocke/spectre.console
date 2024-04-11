@@ -47,7 +47,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return configurator;
     }
 
-    public ICommandConfigurator AddDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
+    public ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
@@ -57,7 +57,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
-    public ICommandConfigurator AddAsyncDelegate<TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
+    public ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromDelegate<TDerivedSettings>(
@@ -67,7 +67,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
-    public IBranchConfigurator AddBranch<TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
+    public IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings
     {
         var command = ConfiguredCommand.FromBranch<TDerivedSettings>(name);

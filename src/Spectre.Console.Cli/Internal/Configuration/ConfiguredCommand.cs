@@ -6,7 +6,9 @@ internal sealed class ConfiguredCommand
     public HashSet<string> Aliases { get; }
     public string? Description { get; set; }
     public object? Data { get; set; }
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public Type? CommandType { get; }
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
     public Type SettingsType { get; }
     public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
     public bool IsDefaultCommand { get; }
@@ -18,6 +20,7 @@ internal sealed class ConfiguredCommand
     private ConfiguredCommand(
         string name,
         Type? commandType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
         Type settingsType,
         Func<CommandContext, CommandSettings, Task<int>>? @delegate,
         bool isDefaultCommand)
@@ -36,17 +39,20 @@ internal sealed class ConfiguredCommand
         Examples = new List<string[]>();
     }
 
-    public static ConfiguredCommand FromBranch(Type settings, string name)
+    public static ConfiguredCommand FromBranch(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type settings, string name)
     {
         return new ConfiguredCommand(name, null, settings, null, false);
     }
 
-    public static ConfiguredCommand FromBranch<TSettings>(string name)
+    public static ConfiguredCommand FromBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name)
         where TSettings : CommandSettings
     {
         return new ConfiguredCommand(name, null, typeof(TSettings), null, false);
     }
 
+    [RequiresUnreferencedCode("Complex reflection")]
     public static ConfiguredCommand FromType<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name, bool isDefaultCommand = false)
         where TCommand : class, ICommand
@@ -60,7 +66,7 @@ internal sealed class ConfiguredCommand
         return new ConfiguredCommand(name, typeof(TCommand), settingsType, null, isDefaultCommand);
     }
 
-    public static ConfiguredCommand FromDelegate<TSettings>(
+    public static ConfiguredCommand FromDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         string name, Func<CommandContext, CommandSettings, Task<int>>? @delegate = null)
         where TSettings : CommandSettings
     {

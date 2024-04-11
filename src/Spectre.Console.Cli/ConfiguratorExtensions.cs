@@ -239,7 +239,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
-    public static IBranchConfigurator AddBranch<TSettings>(
+    public static IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Action<IConfigurator<TSettings>> action)
