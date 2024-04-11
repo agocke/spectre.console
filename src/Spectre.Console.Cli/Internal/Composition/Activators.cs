@@ -1,7 +1,11 @@
+using System.Runtime.CompilerServices;
+
 namespace Spectre.Console.Cli;
 
 internal abstract class ComponentActivator
 {
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     public abstract object Activate(DefaultTypeResolver container);
 
     public abstract ComponentActivator CreateCopy();
@@ -18,6 +22,8 @@ internal class CachingActivator : ComponentActivator
         _result = null;
     }
 
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     public override object Activate(DefaultTypeResolver container)
     {
         return _result ??= _activator.Activate(container);
@@ -38,6 +44,8 @@ internal sealed class InstanceActivator : ComponentActivator
         _instance = instance;
     }
 
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     public override object Activate(DefaultTypeResolver container)
     {
         return _instance;
@@ -51,11 +59,14 @@ internal sealed class InstanceActivator : ComponentActivator
 
 internal sealed class ReflectionActivator : ComponentActivator
 {
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     private readonly Type _type;
     private readonly ConstructorInfo _constructor;
     private readonly List<ParameterInfo> _parameters;
 
-    public ReflectionActivator(Type type)
+    public ReflectionActivator(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+        Type type)
     {
         _type = type;
         _constructor = GetGreediestConstructor(type);
@@ -67,6 +78,8 @@ internal sealed class ReflectionActivator : ComponentActivator
         }
     }
 
+    [RequiresUnreferencedCode("Binding is incompatible with trimming")]
+    [RequiresDynamicCode("Creates new arrays")]
     public override object Activate(DefaultTypeResolver container)
     {
         var parameters = new object?[_parameters.Count];
@@ -104,7 +117,9 @@ internal sealed class ReflectionActivator : ComponentActivator
         return new ReflectionActivator(_type);
     }
 
-    private static ConstructorInfo GetGreediestConstructor(Type type)
+    private static ConstructorInfo GetGreediestConstructor(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+        Type type)
     {
         ConstructorInfo? current = null;
         var count = -1;

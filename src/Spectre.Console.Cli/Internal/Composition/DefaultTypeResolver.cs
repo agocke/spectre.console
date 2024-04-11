@@ -1,5 +1,7 @@
 namespace Spectre.Console.Cli;
 
+[RequiresUnreferencedCode("Complex reflection")]
+[RequiresDynamicCode("Creates arrays of dynamic type")]
 internal sealed class DefaultTypeResolver : IDisposable, ITypeResolver
 {
     public ComponentRegistry Registry { get; }
@@ -19,7 +21,7 @@ internal sealed class DefaultTypeResolver : IDisposable, ITypeResolver
         Registry.Dispose();
     }
 
-    public object? Resolve(Type? type)
+    public object? Resolve([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type? type)
     {
         if (type == null)
         {
@@ -55,6 +57,8 @@ internal sealed class DefaultTypeResolver : IDisposable, ITypeResolver
         return Resolve(registrations?.LastOrDefault());
     }
 
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     public object? Resolve(ComponentRegistration? registration)
     {
         return registration?.Activator?.Activate(this);

@@ -43,6 +43,7 @@ internal sealed class CommandModel : ICommandContainer, ICommandModel
             "?";
     }
 
+    [UnconditionalSuppressMessage("SingleFile", "IL3000", Justification = "Code checks for single-file case and handles it")]
     private static string? GetApplicationFile()
     {
         var location = Assembly.GetEntryAssembly()?.Location;

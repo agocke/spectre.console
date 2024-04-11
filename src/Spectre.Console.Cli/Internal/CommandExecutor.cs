@@ -10,6 +10,8 @@ internal sealed class CommandExecutor
         _registrar.Register(typeof(DefaultPairDeconstructor), typeof(DefaultPairDeconstructor));
     }
 
+    [RequiresUnreferencedCode("Binding is incompatible with trimming")]
+    [RequiresDynamicCode("Creates new arrays")]
     public async Task<int> Execute(IConfiguration configuration, IEnumerable<string> args)
     {
         if (configuration == null)
@@ -124,6 +126,8 @@ internal sealed class CommandExecutor
             VersionHelper.GetVersion(Assembly.GetEntryAssembly());
     }
 
+    [RequiresUnreferencedCode("Binding is incompatible with trimming")]
+    [RequiresDynamicCode("Creates new arrays")]
     private static Task<int> Execute(
         CommandTree leaf,
         CommandTree tree,

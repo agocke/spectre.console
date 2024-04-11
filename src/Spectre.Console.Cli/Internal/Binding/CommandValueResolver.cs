@@ -2,6 +2,8 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandValueResolver
 {
+    [RequiresUnreferencedCode("Uses TypeDescriptor.GetConverter")]
+    [RequiresDynamicCode("Creates new arrays")]
     public static CommandValueLookup GetParameterValues(CommandTree? tree, ITypeResolver resolver)
     {
         var lookup = new CommandValueLookup();
@@ -126,6 +128,8 @@ internal static class CommandValueResolver
         return lookup;
     }
 
+    [RequiresUnreferencedCode("Uses TypeDescriptor.GetConverter")]
+    [RequiresDynamicCode("Creates new arrays")]
     private static object? ConvertValue(ITypeResolver resolver, CommandValueLookup lookup, CommandValueBinder binder, CommandParameter parameter, object? result)
     {
         if (result != null && result.GetType() != parameter.ParameterType)
@@ -140,6 +144,7 @@ internal static class CommandValueResolver
         return result;
     }
 
+    [RequiresDynamicCode("Creates arrays")]
     private static Array ConvertArray(Array sourceArray, TypeConverter converter)
     {
         Array? targetArray = null;
@@ -161,6 +166,8 @@ internal static class CommandValueResolver
     }
 
     [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
+    [RequiresUnreferencedCode("Uses TypeDescriptor.GetConverter")]
+    [RequiresDynamicCode("Creates new arrays")]
     private static (TypeConverter? Converter, ConstructorInfo? StringConstructor) GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
         static ConstructorInfo? GetStringConstructor(Type type)

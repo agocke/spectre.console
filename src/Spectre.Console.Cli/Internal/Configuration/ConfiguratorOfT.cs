@@ -22,6 +22,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.Examples.Add(args);
     }
 
+    [RequiresUnreferencedCode("Complex reflection")]
     public void SetDefaultCommand<TDefaultCommand>()
         where TDefaultCommand : class, ICommandLimiter<TSettings>
     {
@@ -36,7 +37,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.IsHidden = true;
     }
 
-    public ICommandConfigurator AddCommand<TCommand>(string name)
+    public ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name)
         where TCommand : class, ICommandLimiter<TSettings>
     {
         var command = ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false);
@@ -75,6 +76,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new BranchConfigurator(added);
     }
 
+    [RequiresDynamicCode("Uses MakeGenericType")]
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
     {
         var method = GetType().GetMethod("AddCommand");
@@ -93,6 +95,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return result;
     }
 
+    [RequiresDynamicCode("Uses MakeGenericType")]
     IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);

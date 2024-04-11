@@ -3,6 +3,10 @@ namespace Spectre.Console.Cli;
 internal abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
 {
     public Guid Id { get; }
+
+    [DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+        | DynamicallyAccessedMemberTypes.Interfaces)]
     public Type ParameterType { get; }
     public ParameterKind ParameterKind { get; }
     public PropertyInfo Property { get; }
@@ -53,6 +57,8 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         return CommandParameterComparer.ByBackingProperty.Equals(this, other);
     }
 
+    [RequiresDynamicCode("Uses MakeGenericType")]
+    [RequiresUnreferencedCode("Calls Resolve")]
     public void Assign(CommandSettings settings, ITypeResolver resolver, object? value)
     {
         // Is the property pair deconstructable?

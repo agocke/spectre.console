@@ -9,7 +9,7 @@ internal sealed class TypeResolverAdapter : ITypeResolver, IDisposable
         _resolver = resolver;
     }
 
-    public object? Resolve(Type? type)
+    public object? Resolve([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type? type)
     {
         if (type == null)
         {

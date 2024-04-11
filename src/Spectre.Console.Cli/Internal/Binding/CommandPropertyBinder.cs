@@ -2,6 +2,8 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandPropertyBinder
 {
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     public static CommandSettings CreateSettings(CommandValueLookup lookup, Type settingsType, ITypeResolver resolver)
     {
         var settings = CreateSettings(resolver, settingsType);
@@ -24,6 +26,8 @@ internal static class CommandPropertyBinder
         return settings;
     }
 
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     private static CommandSettings CreateSettings(ITypeResolver resolver, Type settingsType)
     {
         if (resolver.Resolve(settingsType) is CommandSettings settings)

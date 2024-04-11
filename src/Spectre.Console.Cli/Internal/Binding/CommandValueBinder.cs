@@ -9,6 +9,8 @@ internal sealed class CommandValueBinder
         _lookup = lookup;
     }
 
+    [RequiresUnreferencedCode("Complex type parsing")]
+    [RequiresDynamicCode("Creates new arrays")]
     public void Bind(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         if (parameter.ParameterKind == ParameterKind.Pair)
@@ -27,6 +29,8 @@ internal sealed class CommandValueBinder
         _lookup.SetValue(parameter, value);
     }
 
+    [RequiresUnreferencedCode("Binding requires complex reflection.")]
+    [RequiresDynamicCode("Creates new arrays")]
     private object GetLookup(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
@@ -63,6 +67,7 @@ internal sealed class CommandValueBinder
         return multimap;
     }
 
+    [RequiresDynamicCode("Creates arrays")]
     private object GetArray(CommandParameter parameter, object? value)
     {
         if (value is Array)

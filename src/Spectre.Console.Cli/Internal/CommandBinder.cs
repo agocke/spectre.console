@@ -2,6 +2,8 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandBinder
 {
+    [RequiresUnreferencedCode("Binding is incompatible with trimming")]
+    [RequiresDynamicCode("Binding requires dynamic code generation")]
     public static CommandSettings Bind(CommandTree? tree, Type settingsType, ITypeResolver resolver)
     {
         var lookup = CommandValueResolver.GetParameterValues(tree, resolver);

@@ -2,7 +2,8 @@ namespace Spectre.Console.Cli;
 
 internal static class ConfigurationHelper
 {
-    public static Type? GetSettingsType(Type commandType)
+    public static Type? GetSettingsType(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] Type commandType)
     {
         if (typeof(ICommand).GetTypeInfo().IsAssignableFrom(commandType) &&
             GetGenericTypeArguments(commandType, typeof(ICommand<>), out var result))
@@ -13,7 +14,9 @@ internal static class ConfigurationHelper
         return null;
     }
 
-    private static bool GetGenericTypeArguments(Type? type, Type genericType,
+    private static bool GetGenericTypeArguments(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] Type? type,
+        Type genericType,
         [NotNullWhen(true)] out Type[]? genericTypeArguments)
     {
         while (type != null)

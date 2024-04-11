@@ -12,6 +12,7 @@ public sealed class PairDeconstructorAttribute : Attribute
     /// pair deconstructor class to use for data conversion for the
     /// object this attribute is bound to.
     /// </summary>
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public Type Type { get; }
 
     /// <summary>
@@ -21,7 +22,7 @@ public sealed class PairDeconstructorAttribute : Attribute
     ///     A System.Type that represents the type of the pair deconstructor
     ///     class to use for data conversion for the object this attribute is bound to.
     /// </param>
-    public PairDeconstructorAttribute(Type type)
+    public PairDeconstructorAttribute([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)
     {
         Type = type ?? throw new ArgumentNullException(nameof(type));
     }

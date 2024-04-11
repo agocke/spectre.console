@@ -14,6 +14,9 @@ public interface ICommandParameterInfo
     /// <summary>
     /// Gets the parameter type.
     /// </summary>
+    [DynamicallyAccessedMembers(
+        DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+        | DynamicallyAccessedMemberTypes.Interfaces)]
     public Type ParameterType { get; }
 
     /// <summary>

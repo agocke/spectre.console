@@ -6,7 +6,7 @@ namespace Spectre.Console.Cli;
 /// The entry point for a command line application with a default command.
 /// </summary>
 /// <typeparam name="TDefaultCommand">The type of the default command.</typeparam>
-public sealed class CommandApp<TDefaultCommand> : ICommandApp
+public sealed class CommandApp<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] TDefaultCommand> : ICommandApp
     where TDefaultCommand : class, ICommand
 {
     private readonly CommandApp _app;
@@ -16,6 +16,8 @@ public sealed class CommandApp<TDefaultCommand> : ICommandApp
     /// Initializes a new instance of the <see cref="CommandApp{TDefaultCommand}"/> class.
     /// </summary>
     /// <param name="registrar">The registrar.</param>
+    [RequiresUnreferencedCode("Uses complex reflection")]
+    [RequiresDynamicCode("Creates arrays of dynamic type")]
     public CommandApp(ITypeRegistrar? registrar = null)
     {
         _app = new CommandApp(registrar);

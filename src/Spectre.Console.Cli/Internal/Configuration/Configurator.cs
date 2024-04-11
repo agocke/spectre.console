@@ -26,7 +26,8 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         _registrar.RegisterInstance(typeof(IHelpProvider), helpProvider);
     }
 
-    public void SetHelpProvider<T>()
+    public void SetHelpProvider<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>()
         where T : IHelpProvider
     {
         // Register the help provider
@@ -38,7 +39,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples.Add(args);
     }
 
-    public ConfiguredCommand SetDefaultCommand<TDefaultCommand>()
+    public ConfiguredCommand SetDefaultCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] TDefaultCommand>()
         where TDefaultCommand : class, ICommand
     {
         DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(
@@ -46,7 +47,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return DefaultCommand;
     }
 
-    public ICommandConfigurator AddCommand<TCommand>(string name)
+    public ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name)
         where TCommand : class, ICommand
     {
         var command = Commands.AddAndReturn(ConfiguredCommand.FromType<TCommand>(name, isDefaultCommand: false));
@@ -78,6 +79,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new BranchConfigurator(added);
     }
 
+    [RequiresDynamicCode("Uses MakeGenericType")]
     ICommandConfigurator IUnsafeConfigurator.AddCommand(string name, Type command)
     {
         var method = GetType().GetMethod("AddCommand");
@@ -96,6 +98,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return result;
     }
 
+    [RequiresDynamicCode("Uses MakeGenericType")]
     IBranchConfigurator IUnsafeConfigurator.AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action)
     {
         var command = ConfiguredCommand.FromBranch(settings, name);

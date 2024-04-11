@@ -4,6 +4,7 @@ namespace Spectre.Console.Cli;
 internal sealed class DefaultPairDeconstructor : IPairDeconstructor
 {
     /// <inheritdoc/>
+    [RequiresUnreferencedCode("Uses GetConverter")]
     (object? Key, object? Value) IPairDeconstructor.Deconstruct(
         ITypeResolver resolver,
         Type keyType,
@@ -44,6 +45,7 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
             Parse(stringValue, valueType));
     }
 
+    [RequiresUnreferencedCode("Uses GetConverter")]
     private static object? Parse(string value, Type targetType)
     {
         try
@@ -58,6 +60,7 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
         }
     }
 
+    [RequiresUnreferencedCode("Uses GetConverter")]
     private static TypeConverter GetConverter(Type type)
     {
         var converter = TypeDescriptor.GetConverter(type);

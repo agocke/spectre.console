@@ -11,6 +11,7 @@ public interface IUnsafeConfigurator
     /// <param name="name">The name of the command.</param>
     /// <param name="command">The command type.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresDynamicCode("Uses MakeGenericType")]
     ICommandConfigurator AddCommand(string name, Type command);
 
     /// <summary>
@@ -20,5 +21,6 @@ public interface IUnsafeConfigurator
     /// <param name="settings">The command setting type.</param>
     /// <param name="action">The command branch configurator.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    [RequiresDynamicCode("Uses MakeGenericType")]
     IBranchConfigurator AddBranch(string name, Type settings, Action<IUnsafeBranchConfigurator> action);
 }

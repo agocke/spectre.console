@@ -5,14 +5,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
+    <TrimmerSingleWarn>false</TrimmerSingleWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Spectre.Console\Spectre.Console.csproj" />
-    <TrimmerRootAssembly Include="Spectre.Console" />
-    <RuntimeHostConfigurationOption
-      Include="Spectre.Console.TypeConverterHelper.AreGenericTypeConvertersSupported"
-      Value="false" Trim="true" />
+    <ProjectReference Include="..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
+    <TrimmerRootAssembly Include="Spectre.Console.Cli" />
   </ItemGroup>
 
 </Project>
