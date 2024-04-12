@@ -12,7 +12,7 @@ public static partial class AnsiConsoleExtensions
     /// <param name="console">The console.</param>
     /// <param name="prompt">The prompt to display.</param>
     /// <returns>The prompt input result.</returns>
-    public static T Prompt<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IAnsiConsole console, IPrompt<T> prompt)
+    public static T Prompt<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this IAnsiConsole console, IPrompt<T> prompt)
     {
         if (prompt is null)
         {
@@ -29,7 +29,7 @@ public static partial class AnsiConsoleExtensions
     /// <param name="console">The console.</param>
     /// <param name="prompt">The prompt markup text.</param>
     /// <returns>The prompt input result.</returns>
-    public static T Ask<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IAnsiConsole console, string prompt)
+    public static T Ask<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this IAnsiConsole console, string prompt)
     {
         return new TextPrompt<T>(prompt).Show(console);
     }
@@ -42,7 +42,7 @@ public static partial class AnsiConsoleExtensions
     /// <param name="prompt">The prompt markup text.</param>
     /// <param name="culture">Specific CultureInfo to use when converting input.</param>
     /// <returns>The prompt input result.</returns>
-    public static T Ask<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IAnsiConsole console, string prompt, CultureInfo? culture)
+    public static T Ask<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this IAnsiConsole console, string prompt, CultureInfo? culture)
     {
         var textPrompt = new TextPrompt<T>(prompt);
         textPrompt.Culture = culture;

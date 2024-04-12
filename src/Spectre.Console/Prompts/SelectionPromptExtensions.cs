@@ -12,7 +12,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="mode">The selection mode.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> Mode<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, SelectionMode mode)
+    public static SelectionPrompt<T> Mode<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, SelectionMode mode)
         where T : notnull
     {
         if (obj is null)
@@ -31,7 +31,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, params T[] choices)
+    public static SelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, params T[] choices)
         where T : notnull
     {
         if (obj is null)
@@ -54,7 +54,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, IEnumerable<T> choices)
+    public static SelectionPrompt<T> AddChoices<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, IEnumerable<T> choices)
         where T : notnull
     {
         if (obj is null)
@@ -78,7 +78,7 @@ public static class SelectionPromptExtensions
     /// <param name="group">The group.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> AddChoiceGroup<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, T group, IEnumerable<T> choices)
+    public static SelectionPrompt<T> AddChoiceGroup<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, T group, IEnumerable<T> choices)
         where T : notnull
     {
         if (obj is null)
@@ -103,7 +103,7 @@ public static class SelectionPromptExtensions
     /// <param name="group">The group.</param>
     /// <param name="choices">The choices to add.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> AddChoiceGroup<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, T group, params T[] choices)
+    public static SelectionPrompt<T> AddChoiceGroup<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, T group, params T[] choices)
         where T : notnull
     {
         if (obj is null)
@@ -127,7 +127,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="title">The title markup text.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> Title<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, string? title)
+    public static SelectionPrompt<T> Title<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, string? title)
         where T : notnull
     {
         if (obj is null)
@@ -146,7 +146,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="pageSize">The number of choices that are displayed to the user.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> PageSize<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, int pageSize)
+    public static SelectionPrompt<T> PageSize<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, int pageSize)
         where T : notnull
     {
         if (obj is null)
@@ -170,7 +170,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="shouldWrap">Whether the selection should wrap around.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> WrapAround<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, bool shouldWrap = true)
+    public static SelectionPrompt<T> WrapAround<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, bool shouldWrap = true)
         where T : notnull
     {
         if (obj is null)
@@ -189,7 +189,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="highlightStyle">The highlight style of the selected choice.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> HighlightStyle<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, Style highlightStyle)
+    public static SelectionPrompt<T> HighlightStyle<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, Style highlightStyle)
         where T : notnull
     {
         if (obj is null)
@@ -208,7 +208,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="text">The text to display.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> MoreChoicesText<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, string? text)
+    public static SelectionPrompt<T> MoreChoicesText<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, string? text)
         where T : notnull
     {
         if (obj is null)
@@ -227,7 +227,7 @@ public static class SelectionPromptExtensions
     /// <param name="obj">The prompt.</param>
     /// <param name="displaySelector">The function to get a display string for a given choice.</param>
     /// <returns>The same instance so that multiple calls can be chained.</returns>
-    public static SelectionPrompt<T> UseConverter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this SelectionPrompt<T> obj, Func<T, string>? displaySelector)
+    public static SelectionPrompt<T> UseConverter<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T>(this SelectionPrompt<T> obj, Func<T, string>? displaySelector)
         where T : notnull
     {
         if (obj is null)

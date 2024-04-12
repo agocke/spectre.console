@@ -4,7 +4,7 @@ namespace Spectre.Console;
 /// Represents a prompt.
 /// </summary>
 /// <typeparam name="T">The prompt result type.</typeparam>
-public sealed class TextPrompt<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T> : IPrompt<T>, IHasCulture
+public sealed class TextPrompt<[DynamicallyAccessedMembers(TypeConverterHelper.ConverterAnnotation)] T> : IPrompt<T>, IHasCulture
 {
     private readonly string _prompt;
     private readonly StringComparer? _comparer;
