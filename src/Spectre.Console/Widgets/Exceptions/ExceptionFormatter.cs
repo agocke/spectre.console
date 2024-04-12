@@ -303,18 +303,19 @@ internal static class ExceptionFormatter
     {
         var customAttribs = parameter.GetCustomAttributes(inherit: false);
 
+        var tupleElementNamesType = typeof(TupleElementNamesAttribute);
+
         var tupleNameAttribute = customAttribs
             .OfType<Attribute>()
             .FirstOrDefault(a =>
             {
                 var attributeType = a.GetType();
-                return attributeType.Namespace == "System.Runtime.CompilerServices" &&
-                       attributeType.Name == "TupleElementNamesAttribute";
+                return tupleElementNamesType == attributeType;
             });
 
         if (tupleNameAttribute != null)
         {
-            var propertyInfo = tupleNameAttribute.GetType()
+            var propertyInfo = tupleElementNamesType
                 .GetProperty("TransformNames", BindingFlags.Instance | BindingFlags.Public)!;
             var tupleNames = propertyInfo.GetValue(tupleNameAttribute) as IList<string>;
             if (tupleNames?.Count > 0)

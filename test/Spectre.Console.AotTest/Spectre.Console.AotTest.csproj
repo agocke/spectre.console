@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Spectre.Console.Cli\Spectre.Console.Cli.csproj" />
+    <TrimmerRootAssembly Include="Spectre.Console" />
     <TrimmerRootAssembly Include="Spectre.Console.Cli" />
   </ItemGroup>
 
