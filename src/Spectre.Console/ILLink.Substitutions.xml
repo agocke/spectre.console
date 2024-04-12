@@ -1,8 +1,8 @@
 <linker>
   <assembly fullname="Spectre.Console">
     <type fullname="Spectre.Console.TypeConverterHelper" >
-      <method signature="System.Boolean get_AreGenericTypeConvertersSupported()" body="stub" value="false"
-              feature="Spectre.Console.TypeConverterHelper.AreGenericTypeConvertersSupported" featurevalue="false" />
+      <method signature="System.Boolean get_IsGetConverterSupported()" body="stub" value="false"
+              feature="Spectre.Console.TypeConverterHelper.IsGetConverterSupported" featurevalue="false" />
     </type>
   </assembly>
 </linker>
