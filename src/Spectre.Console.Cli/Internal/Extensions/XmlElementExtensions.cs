@@ -22,9 +22,10 @@ internal static class XmlElementExtensions
         element.SetAttribute(name, value ? "true" : "false");
     }
 
-    public static void SetEnumAttribute(this XmlElement element, string name, Enum value)
+    public static void SetEnumAttribute<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] TEnum>(this XmlElement element, string name, TEnum value)
+        where TEnum : Enum
     {
-        var field = value.GetType().GetField(value.ToString());
+        var field = typeof(TEnum).GetField(value.ToString());
         if (field != null)
         {
             var attribute = field.GetCustomAttribute<DescriptionAttribute>(false);

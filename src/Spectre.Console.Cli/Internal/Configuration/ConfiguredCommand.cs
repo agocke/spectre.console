@@ -19,6 +19,8 @@ internal sealed class ConfiguredCommand
 
     private ConfiguredCommand(
         string name,
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)]
         Type? commandType,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
         Type settingsType,
@@ -52,9 +54,11 @@ internal sealed class ConfiguredCommand
         return new ConfiguredCommand(name, null, typeof(TSettings), null, false);
     }
 
-    [RequiresUnreferencedCode("Complex reflection")]
     public static ConfiguredCommand FromType<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name, bool isDefaultCommand = false)
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.Interfaces
+            | DynamicallyAccessedMemberTypes.PublicProperties
+            | DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>(string name, bool isDefaultCommand = false)
         where TCommand : class, ICommand
     {
         var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));

@@ -17,6 +17,7 @@ internal static class CommandModelBuilder
         }
     }
 
+    [RequiresUnreferencedCode("Building commands requires complex reflection.")]
     public static CommandModel Build(IConfiguration configuration)
     {
         var result = new List<CommandInfo>();
@@ -43,6 +44,7 @@ internal static class CommandModelBuilder
         return model;
     }
 
+    [RequiresUnreferencedCode("Building parameters is annotated with RequiresUnreferencedCode.")]
     private static CommandInfo Build(CommandInfo? parent, ConfiguredCommand command)
     {
         var info = new CommandInfo(parent, command);
@@ -70,6 +72,7 @@ internal static class CommandModelBuilder
         return info;
     }
 
+    [RequiresUnreferencedCode("Building parameters is annotated with RequiresUnreferencedCode.")]
     private static IEnumerable<CommandParameter> GetParameters(CommandInfo command)
     {
         var result = new List<CommandParameter>();
@@ -172,7 +175,7 @@ internal static class CommandModelBuilder
         return result;
     }
 
-    [RequiresUnreferencedCode("Complex reflection.")]
+    [RequiresUnreferencedCode("Requires annotating the return type of the property, which is not supported.")]
     private static CommandOption BuildOptionParameter(PropertyInfo property, CommandOptionAttribute attribute)
     {
         var description = property.GetCustomAttribute<DescriptionAttribute>();
@@ -195,7 +198,7 @@ internal static class CommandModelBuilder
             attribute.ValueIsOptional);
     }
 
-    [RequiresUnreferencedCode("Complex reflection.")]
+    [RequiresUnreferencedCode("Requires annotating the return type of the property, which is not supported.")]
     private static CommandArgument BuildArgumentParameter(PropertyInfo property, CommandArgumentAttribute attribute)
     {
         var description = property.GetCustomAttribute<DescriptionAttribute>();

@@ -301,7 +301,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    public static ICommandConfigurator AddDelegate<TSettings>(
+    public static ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Func<CommandContext, int> func)
@@ -323,7 +323,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
-    public static ICommandConfigurator AddAsyncDelegate<TSettings>(
+    public static ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
         Func<CommandContext, Task<int>> func)
