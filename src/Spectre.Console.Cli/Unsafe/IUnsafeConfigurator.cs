@@ -12,6 +12,7 @@ public interface IUnsafeConfigurator
     /// <param name="command">The command type.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
     [RequiresDynamicCode("Uses MakeGenericType")]
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     ICommandConfigurator AddCommand(
         string name,
         [DynamicallyAccessedMembers(
@@ -28,6 +29,7 @@ public interface IUnsafeConfigurator
     /// <param name="action">The command branch configurator.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
     [RequiresDynamicCode("Uses MakeGenericType")]
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     IBranchConfigurator AddBranch(
         string name,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type settings,

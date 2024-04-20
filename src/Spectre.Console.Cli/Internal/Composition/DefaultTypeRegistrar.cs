@@ -2,7 +2,7 @@ namespace Spectre.Console.Cli;
 
 [RequiresUnreferencedCode("Complex reflection")]
 [RequiresDynamicCode("Creates new arrays at runtime")]
-internal sealed class DefaultTypeRegistrar : ITypeRegistrar
+public sealed class DefaultTypeRegistrar : ITypeRegistrar
 {
     private readonly Queue<Action<ComponentRegistry>> _registry;
 

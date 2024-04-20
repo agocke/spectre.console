@@ -45,10 +45,24 @@ public interface IConfigurator<in TSettings>
     /// <typeparam name="TCommand">The command type.</typeparam>
     /// <param name="name">The name of the command.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicConstructors
             | DynamicallyAccessedMemberTypes.PublicProperties
             | DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name)
+        where TCommand : class, ICommandLimiter<TSettings>;
+
+    /// <summary>
+    /// Adds a command.
+    /// </summary>
+    /// <typeparam name="TCommand">The command type.</typeparam>
+    /// <param name="name">The name of the command.</param>
+    /// <param name="optionsAndArgs">The options and arguments for the command.</param>
+    /// <returns>A command configurator that can be used to configure the command further.</returns>
+    ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicConstructors
+            | DynamicallyAccessedMemberTypes.PublicProperties
+            | DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name, OptionsAndArgs optionsAndArgs)
         where TCommand : class, ICommandLimiter<TSettings>;
 
     /// <summary>
@@ -58,6 +72,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings;
 
@@ -68,6 +83,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings;
 
@@ -78,6 +94,7 @@ public interface IConfigurator<in TSettings>
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings;
 }

@@ -1,6 +1,6 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandOption : CommandParameter, ICommandOption
+public sealed class CommandOption : CommandParameter, ICommandOption
 {
     public IReadOnlyList<string> LongNames { get; }
     public IReadOnlyList<string> ShortNames { get; }
@@ -8,7 +8,7 @@ internal sealed class CommandOption : CommandParameter, ICommandOption
     public bool ValueIsOptional { get; }
     public bool IsShadowed { get; set; }
 
-    public CommandOption(
+    internal CommandOption(
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
             | DynamicallyAccessedMemberTypes.Interfaces)]

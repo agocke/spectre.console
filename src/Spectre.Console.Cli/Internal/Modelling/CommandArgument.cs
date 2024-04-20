@@ -1,11 +1,11 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandArgument : CommandParameter, ICommandArgument
+public sealed class CommandArgument : CommandParameter, ICommandArgument
 {
     public string Value { get; }
     public int Position { get; set; }
 
-    public CommandArgument(
+    internal CommandArgument(
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
             | DynamicallyAccessedMemberTypes.Interfaces)]

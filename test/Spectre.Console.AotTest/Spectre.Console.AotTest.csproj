@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <TrimmerSingleWarn>false</TrimmerSingleWarn>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

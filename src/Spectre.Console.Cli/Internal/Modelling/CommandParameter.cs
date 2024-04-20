@@ -1,6 +1,6 @@
 namespace Spectre.Console.Cli;
 
-internal abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
+public abstract class CommandParameter : ICommandParameterInfo, ICommandParameter
 {
     public Guid Id { get; }
 
@@ -8,7 +8,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
         DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
         | DynamicallyAccessedMemberTypes.Interfaces)]
     public Type ParameterType { get; }
-    public ParameterKind ParameterKind { get; }
+    internal ParameterKind ParameterKind { get; }
     public PropertyInfo Property { get; }
     public string? Description { get; }
     public DefaultValueAttribute? DefaultValue { get; }
@@ -25,7 +25,7 @@ internal abstract class CommandParameter : ICommandParameterInfo, ICommandParame
 
     public bool IsFlag => ParameterKind == ParameterKind.Flag;
 
-    protected CommandParameter(
+    private protected CommandParameter(
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
             | DynamicallyAccessedMemberTypes.Interfaces)]

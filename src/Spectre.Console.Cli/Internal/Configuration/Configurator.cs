@@ -39,6 +39,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         Examples.Add(args);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ConfiguredCommand SetDefaultCommand<[DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.Interfaces
             | DynamicallyAccessedMemberTypes.PublicProperties
@@ -49,6 +50,17 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return DefaultCommand;
     }
 
+    public ConfiguredCommand SetDefaultCommand<[DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.Interfaces
+            | DynamicallyAccessedMemberTypes.PublicProperties
+            | DynamicallyAccessedMemberTypes.PublicConstructors)] TDefaultCommand>(OptionsAndArgs optionsAndArgs)
+        where TDefaultCommand : class, ICommand
+    {
+        DefaultCommand = ConfiguredCommand.FromType<TDefaultCommand>(CliConstants.DefaultCommandName, optionsAndArgs, isDefaultCommand: true);
+        return DefaultCommand;
+    }
+
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ICommandConfigurator AddCommand<[DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicConstructors
             | DynamicallyAccessedMemberTypes.PublicProperties
@@ -59,6 +71,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name, Func<CommandContext, TSettings, int> func)
         where TSettings : CommandSettings
     {
@@ -67,6 +80,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name, Func<CommandContext, TSettings, Task<int>> func)
         where TSettings : CommandSettings
     {
@@ -75,6 +89,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new CommandConfigurator(command);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name, Action<IConfigurator<TSettings>> action)
         where TSettings : CommandSettings
     {
@@ -84,7 +99,17 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return new BranchConfigurator(added);
     }
 
+    public IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name, OptionsAndArgs optionsAndArgs, Action<IConfigurator<TSettings>> action)
+        where TSettings : CommandSettings
+    {
+        var command = ConfiguredCommand.FromBranch<TSettings>(name, optionsAndArgs);
+        action(new Configurator<TSettings>(command, _registrar));
+        var added = Commands.AddAndReturn(command);
+        return new BranchConfigurator(added);
+    }
+
     [RequiresDynamicCode("Uses MakeGenericType")]
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     ICommandConfigurator IUnsafeConfigurator.AddCommand(
         string name,
         [DynamicallyAccessedMembers(
@@ -108,6 +133,7 @@ internal sealed class Configurator : IUnsafeConfigurator, IConfigurator, IConfig
         return result;
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     [RequiresDynamicCode("Uses MakeGenericType")]
     IBranchConfigurator IUnsafeConfigurator.AddBranch(
         string name,

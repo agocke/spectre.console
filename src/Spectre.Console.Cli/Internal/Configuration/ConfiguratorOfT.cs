@@ -37,6 +37,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         _command.IsHidden = true;
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ICommandConfigurator AddCommand<
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.PublicConstructors
@@ -51,6 +52,21 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return configurator;
     }
 
+    public ICommandConfigurator AddCommand<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicConstructors
+            | DynamicallyAccessedMemberTypes.PublicProperties
+            | DynamicallyAccessedMemberTypes.Interfaces)] TCommand>(string name, OptionsAndArgs optionsAndArgs)
+        where TCommand : class, ICommandLimiter<TSettings>
+    {
+        var command = ConfiguredCommand.FromType<TCommand>(name, optionsAndArgs, isDefaultCommand: false);
+        var configurator = new CommandConfigurator(command);
+
+        _command.Children.Add(command);
+        return configurator;
+    }
+
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, int> func)
         where TDerivedSettings : TSettings
     {
@@ -61,6 +77,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Func<CommandContext, TDerivedSettings, Task<int>> func)
         where TDerivedSettings : TSettings
     {
@@ -71,6 +88,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
         return new CommandConfigurator(command);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TDerivedSettings>(string name, Action<IConfigurator<TDerivedSettings>> action)
         where TDerivedSettings : TSettings
     {
@@ -81,6 +99,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     }
 
     [RequiresDynamicCode("Uses MakeGenericType")]
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     ICommandConfigurator IUnsafeConfigurator.AddCommand(
         string name,
         [DynamicallyAccessedMembers(
@@ -105,6 +124,7 @@ internal sealed class Configurator<TSettings> : IUnsafeBranchConfigurator, IConf
     }
 
     [RequiresDynamicCode("Uses MakeGenericType")]
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     IBranchConfigurator IUnsafeConfigurator.AddBranch(
         string name,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] Type settings,

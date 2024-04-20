@@ -228,7 +228,7 @@ public static class ConfiguratorExtensions
             throw new ArgumentNullException(nameof(configurator));
         }
 
-        return configurator.AddBranch(name, action);
+        return configurator.AddBranch(name, CommandModelBuilder.EmptyOptionsAndArgs, action);
     }
 
     /// <summary>
@@ -239,6 +239,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command branch.</param>
     /// <param name="action">The command branch configuration.</param>
     /// <returns>A branch configurator that can be used to configure the branch further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static IBranchConfigurator AddBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
@@ -260,6 +261,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ICommandConfigurator AddDelegate(
         this IConfigurator configurator,
         string name,
@@ -280,6 +282,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ICommandConfigurator AddAsyncDelegate(
         this IConfigurator configurator,
         string name,
@@ -301,6 +304,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ICommandConfigurator AddDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,
@@ -323,6 +327,7 @@ public static class ConfiguratorExtensions
     /// <param name="name">The name of the command.</param>
     /// <param name="func">The delegate to execute as part of command execution.</param>
     /// <returns>A command configurator that can be used to configure the command further.</returns>
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ICommandConfigurator AddAsyncDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         this IConfigurator<TSettings> configurator,
         string name,

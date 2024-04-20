@@ -1,3 +1,7 @@
+global using OptionsAndArgs = System.Collections.Generic.IEnumerable<
+    (System.Collections.Generic.IEnumerable<Spectre.Console.Cli.CommandOption> Options,
+     System.Collections.Generic.IEnumerable<Spectre.Console.Cli.CommandArgument> Args)>;
+
 namespace Spectre.Console.Cli;
 
 internal sealed class ConfiguredCommand
@@ -11,12 +15,14 @@ internal sealed class ConfiguredCommand
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
     public Type SettingsType { get; }
     public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
+    public OptionsAndArgs? OptionsAndArgs { get; }
     public bool IsDefaultCommand { get; }
     public bool IsHidden { get; set; }
 
     public IList<ConfiguredCommand> Children { get; }
     public IList<string[]> Examples { get; }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     private ConfiguredCommand(
         string name,
         [DynamicallyAccessedMembers(
@@ -32,6 +38,7 @@ internal sealed class ConfiguredCommand
         CommandType = commandType;
         SettingsType = settingsType;
         Delegate = @delegate;
+        OptionsAndArgs = null;
         IsDefaultCommand = isDefaultCommand;
 
         // Default commands are always created as hidden.
@@ -41,6 +48,33 @@ internal sealed class ConfiguredCommand
         Examples = new List<string[]>();
     }
 
+    private ConfiguredCommand(
+        string name,
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type? commandType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+        Type settingsType,
+        Func<CommandContext, CommandSettings, Task<int>>? @delegate,
+        bool isDefaultCommand,
+        OptionsAndArgs optionsAndArgs)
+    {
+        Name = name;
+        Aliases = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        CommandType = commandType;
+        SettingsType = settingsType;
+        Delegate = @delegate;
+        OptionsAndArgs = optionsAndArgs;
+        IsDefaultCommand = isDefaultCommand;
+
+        // Default commands are always created as hidden.
+        IsHidden = IsDefaultCommand;
+
+        Children = new List<ConfiguredCommand>();
+        Examples = new List<string[]>();
+    }
+
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ConfiguredCommand FromBranch(
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
         Type settings, string name)
@@ -48,12 +82,20 @@ internal sealed class ConfiguredCommand
         return new ConfiguredCommand(name, null, settings, null, false);
     }
 
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ConfiguredCommand FromBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name)
         where TSettings : CommandSettings
     {
         return new ConfiguredCommand(name, null, typeof(TSettings), null, false);
     }
 
+    public static ConfiguredCommand FromBranch<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(string name, OptionsAndArgs optionsAndArgs)
+        where TSettings : CommandSettings
+    {
+        return new ConfiguredCommand(name, null, typeof(TSettings), null, false, optionsAndArgs);
+    }
+
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ConfiguredCommand FromType<
         [DynamicallyAccessedMembers(
             DynamicallyAccessedMemberTypes.Interfaces
@@ -70,6 +112,23 @@ internal sealed class ConfiguredCommand
         return new ConfiguredCommand(name, typeof(TCommand), settingsType, null, isDefaultCommand);
     }
 
+    public static ConfiguredCommand FromType<
+        [DynamicallyAccessedMembers(
+            DynamicallyAccessedMemberTypes.Interfaces
+            | DynamicallyAccessedMemberTypes.PublicProperties
+            | DynamicallyAccessedMemberTypes.PublicConstructors)] TCommand>(string name, OptionsAndArgs optionsAndArgs, bool isDefaultCommand = false)
+        where TCommand : class, ICommand
+    {
+        var settingsType = ConfigurationHelper.GetSettingsType(typeof(TCommand));
+        if (settingsType == null)
+        {
+            throw CommandRuntimeException.CouldNotGetSettingsType(typeof(TCommand));
+        }
+
+        return new ConfiguredCommand(name, typeof(TCommand), settingsType, null, isDefaultCommand, optionsAndArgs);
+    }
+
+    [RequiresUnreferencedCode("OptionsAndArgs must be provided for trim-compatibility.")]
     public static ConfiguredCommand FromDelegate<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] TSettings>(
         string name, Func<CommandContext, CommandSettings, Task<int>>? @delegate = null)
         where TSettings : CommandSettings
