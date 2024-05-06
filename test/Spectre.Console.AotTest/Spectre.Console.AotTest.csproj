@@ -7,6 +7,7 @@
     <PublishAot>true</PublishAot>
     <TrimmerSingleWarn>false</TrimmerSingleWarn>
     <LangVersion>12</LangVersion>
+    <NoWarn>$(NoWarn);SA1010</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

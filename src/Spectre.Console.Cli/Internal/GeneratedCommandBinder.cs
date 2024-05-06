@@ -1,9 +1,14 @@
 namespace Spectre.Console.Cli;
 
-internal static class CommandBinder
+public interface IGeneratedCommandBinder
 {
-    [RequiresDynamicCode("Binding requires dynamic")]
-    [RequiresUnreferencedCode("Complex reflection")]
+    void BindUnmapped(IEnumerable<CommandParameter> unmapped);
+    void BindMapped(IEnumerable<(CommandParameter Parameter, string? Value)> mapped);
+    CommandSettings BuildSettings();
+}
+
+internal static class GeneratedCommandBinder
+{
     public static CommandSettings Bind(CommandTree? tree, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type settingsType, ITypeResolver resolver)
     {
         var lookup = GeneratedCommandValueResolver.GetParameterValues(tree, resolver);

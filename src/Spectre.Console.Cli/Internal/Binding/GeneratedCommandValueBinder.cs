@@ -1,16 +1,14 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class CommandValueBinder
+internal sealed class GeneratedCommandValueBinder
 {
     private readonly CommandValueLookup _lookup;
 
-    public CommandValueBinder(CommandValueLookup lookup)
+    public GeneratedCommandValueBinder(CommandValueLookup lookup)
     {
         _lookup = lookup;
     }
 
-    [RequiresDynamicCode("Creates new arrays")]
-    [RequiresUnreferencedCode("Calls Spectre.Console.Cli.CommandValueBinder.GetLookup(CommandParameter, ITypeResolver, Object)")]
     public void Bind(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         if (parameter.ParameterKind == ParameterKind.Pair)
@@ -29,8 +27,6 @@ internal sealed class CommandValueBinder
         _lookup.SetValue(parameter, value);
     }
 
-    [RequiresDynamicCode("Calls Spectre.Console.Cli.CommandValueBinder.GetArray(CommandParameter, Object)")]
-    [RequiresUnreferencedCode("Calls Spectre.Console.Cli.CommandValueBinder.GetLookupSafe(CommandParameter, ITypeResolver, Object)")]
     public void BindSafe(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         if (parameter.ParameterKind == ParameterKind.Pair)
@@ -49,8 +45,6 @@ internal sealed class CommandValueBinder
         _lookup.SetValue(parameter, value);
     }
 
-    [RequiresDynamicCode("Creates new arrays")]
-    [RequiresUnreferencedCode("Convert")]
     private object GetLookup(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
@@ -87,8 +81,6 @@ internal sealed class CommandValueBinder
         return multimap;
     }
 
-    [RequiresDynamicCode("Calls System.Type.MakeGenericType(params Type[])")]
-    [RequiresUnreferencedCode("Complex reflection")]
     private object GetLookupSafe(CommandParameter parameter, ITypeResolver resolver, object? value)
     {
         var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
@@ -125,7 +117,6 @@ internal sealed class CommandValueBinder
         return multimap;
     }
 
-    [RequiresDynamicCode("Creates arrays")]
     private object GetArray(CommandParameter parameter, object? value)
     {
         if (value is Array)

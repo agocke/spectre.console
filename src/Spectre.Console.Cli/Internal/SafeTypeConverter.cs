@@ -2,29 +2,15 @@ using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
 
 namespace Spectre.Console;
 
-internal static class TypeConverterHelper
+internal static class SafeTypeConverter
 {
     internal const DynamicallyAccessedMemberTypes ConverterAnnotation = DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicFields;
-
-    internal static bool IsGetConverterSupported =>
-        !AppContext.TryGetSwitch("Spectre.Console.TypeConverterHelper.IsGetConverterSupported ", out var enabled) || enabled;
-
-    public static string ConvertToString<[DAM(ConverterAnnotation)] T>(T input)
-    {
-        var result = GetTypeConverter<T>().ConvertToInvariantString(input);
-        if (result == null)
-        {
-            throw new InvalidOperationException("Could not convert input to a string");
-        }
-
-        return result;
-    }
 
     public static bool TryConvertFromString<[DAM(ConverterAnnotation)] T>(string input, [MaybeNull] out T? result)
     {
         try
         {
-            result = (T?)GetTypeConverter<T>().ConvertFromInvariantString(input);
+            result = (T?)GetConverter<T>().ConvertFromInvariantString(input);
             return true;
         }
         catch
@@ -44,7 +30,7 @@ internal static class TypeConverterHelper
             }
             else
             {
-                result = (T?)GetTypeConverter<T>().ConvertFromString(null!, info, input);
+                result = (T?)GetConverter<T>().ConvertFromString(null!, info, input);
             }
 
             return true;
@@ -56,21 +42,23 @@ internal static class TypeConverterHelper
         }
     }
 
-    public static TypeConverter GetTypeConverter<[DAM(ConverterAnnotation)] T>()
+    public static TypeConverter GetConverter<[DAM(ConverterAnnotation)] T>() => GetConverter(typeof(T));
+
+    public static TypeConverter GetConverter([DAM(ConverterAnnotation)] Type converterType)
     {
-        var converter = GetConverter();
+        var converter = GetIntrinsicConverter(converterType);
         if (converter != null)
         {
             return converter;
         }
 
-        var attribute = typeof(T).GetCustomAttribute<TypeConverterAttribute>();
+        var attribute = converterType.GetCustomAttribute<TypeConverterAttribute>();
         if (attribute != null)
         {
-            var type = Type.GetType(attribute.ConverterTypeName, false, false);
-            if (type != null)
+            var attrType = Type.GetType(attribute.ConverterTypeName, false, false);
+            if (attrType != null)
             {
-                converter = Activator.CreateInstance(type) as TypeConverter;
+                converter = Activator.CreateInstance(attrType) as TypeConverter;
                 if (converter != null)
                 {
                     return converter;
@@ -79,25 +67,13 @@ internal static class TypeConverterHelper
         }
 
         throw new InvalidOperationException("Could not find type converter");
-
-        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2087", Justification = "Feature switches are not currently supported in the analyzer")]
-        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026", Justification = "Feature switches are not currently supported in the analyzer")]
-        static TypeConverter? GetConverter()
-        {
-            if (!IsGetConverterSupported)
-            {
-                return GetIntrinsicConverter(typeof(T));
-            }
-
-            return TypeDescriptor.GetConverter(typeof(T));
-        }
     }
 
     private delegate TypeConverter FuncWithDam([DAM(ConverterAnnotation)] Type type);
 
     private static readonly Dictionary<Type, FuncWithDam> _intrinsicConverters;
 
-    static TypeConverterHelper()
+    static SafeTypeConverter()
     {
         _intrinsicConverters = new()
         {

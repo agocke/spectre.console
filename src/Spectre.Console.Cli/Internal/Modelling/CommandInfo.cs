@@ -8,7 +8,7 @@ internal sealed class CommandInfo : ICommandContainer, ICommandInfo
     public object? Data { get; }
     [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
     public Type? CommandType { get; }
-    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties)]
     public Type SettingsType { get; }
     public Func<CommandContext, CommandSettings, Task<int>>? Delegate { get; }
     public bool IsDefaultCommand { get; }

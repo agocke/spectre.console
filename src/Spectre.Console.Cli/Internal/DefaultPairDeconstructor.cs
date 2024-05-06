@@ -4,11 +4,10 @@ namespace Spectre.Console.Cli;
 internal sealed class DefaultPairDeconstructor : IPairDeconstructor
 {
     /// <inheritdoc/>
-    [RequiresUnreferencedCode("Uses GetConverter")]
     (object? Key, object? Value) IPairDeconstructor.Deconstruct(
         ITypeResolver resolver,
-        Type keyType,
-        Type valueType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type keyType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type valueType,
         string? value)
     {
         if (value == null)
@@ -41,12 +40,10 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
             }
         }
 
-        return (Parse(stringkey, keyType),
-            Parse(stringValue, valueType));
+        return (Parse(stringkey, keyType), Parse(stringValue, valueType));
     }
 
-    [RequiresUnreferencedCode("Uses GetConverter")]
-    private static object? Parse(string value, Type targetType)
+    private static object? Parse(string value, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type targetType)
     {
         try
         {
@@ -60,8 +57,8 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
         }
     }
 
-    [RequiresUnreferencedCode("Uses GetConverter")]
-    private static TypeConverter GetConverter(Type type)
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
+    private static TypeConverter GetConverter([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
     {
         var converter = TypeDescriptor.GetConverter(type);
         if (converter != null)

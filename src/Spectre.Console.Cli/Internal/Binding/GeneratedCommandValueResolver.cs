@@ -1,13 +1,32 @@
 namespace Spectre.Console.Cli;
 
-internal static class CommandValueResolver
+internal static class GeneratedCommandValueResolver
 {
-    [RequiresDynamicCode("Creates new arrays")]
-    [RequiresUnreferencedCode("Convert")]
+    public static CommandValueLookup GetParameterValues(IGeneratedCommandBinder genBinder, CommandTree? tree, ITypeResolver resolver)
+    {
+        var lookup = new CommandValueLookup();
+        var binder = new GeneratedCommandValueBinder(lookup);
+
+        CommandValidator.ValidateRequiredParameters(tree);
+
+        while (tree != null)
+        {
+            // Process unmapped parameters.
+            genBinder.BindUnmapped(tree.Unmapped);
+
+            // Process mapped parameters.
+            genBinder.BindMapped(tree.Mapped.Select(m => (m.Parameter, m.Value)));
+
+            tree = tree.Next;
+        }
+
+        return lookup;
+    }
+
     public static CommandValueLookup GetParameterValues(CommandTree? tree, ITypeResolver resolver)
     {
         var lookup = new CommandValueLookup();
-        var binder = new CommandValueBinder(lookup);
+        var binder = new GeneratedCommandValueBinder(lookup);
 
         CommandValidator.ValidateRequiredParameters(tree);
 
@@ -128,9 +147,7 @@ internal static class CommandValueResolver
         return lookup;
     }
 
-    [RequiresDynamicCode("Creates new arrays")]
-    [RequiresUnreferencedCode("Calls Spectre.Console.Cli.CommandValueResolver.GetConverter(CommandValueLookup, CommandValueBinder, ITypeResolver, CommandParameter)")]
-    private static object? ConvertValue(ITypeResolver resolver, CommandValueLookup lookup, CommandValueBinder binder, CommandParameter parameter, object? result)
+    private static object? ConvertValue(ITypeResolver resolver, CommandValueLookup lookup, GeneratedCommandValueBinder binder, CommandParameter parameter, object? result)
     {
         if (result != null && result.GetType() != parameter.ParameterType)
         {
@@ -144,7 +161,7 @@ internal static class CommandValueResolver
         return result;
     }
 
-    [RequiresDynamicCode("Creates arrays")]
+    [RequiresDynamicCode("Creates an array of converter.ConvertFrom().GetType() type")]
     private static Array ConvertArray(Array sourceArray, TypeConverter converter)
     {
         Array? targetArray = null;
@@ -165,10 +182,8 @@ internal static class CommandValueResolver
         return targetArray ?? sourceArray;
     }
 
-    [SuppressMessage("Style", "IDE0019:Use pattern matching", Justification = "It's OK")]
-    [RequiresDynamicCode("Creates new arrays")]
-    [RequiresUnreferencedCode("Complex reflection")]
-    private static (TypeConverter? Converter, ConstructorInfo? StringConstructor) GetConverter(CommandValueLookup lookup, CommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
+    [RequiresUnreferencedCode("If parameter is an array, gets the converter for the element type")]
+    private static (TypeConverter? Converter, ConstructorInfo? StringConstructor) GetConverter(CommandValueLookup lookup, GeneratedCommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
         static ConstructorInfo? GetStringConstructor([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)
         {
@@ -187,7 +202,7 @@ internal static class CommandValueResolver
                     throw new InvalidOperationException("Could not get element type");
                 }
 
-                return (TypeDescriptor.GetConverter(elementType), GetStringConstructor(elementType));
+                return (SafeTypeConverter.GetConverter(elementType), GetStringConstructor(elementType));
             }
 
             if (parameter.IsFlagValue())
@@ -207,7 +222,7 @@ internal static class CommandValueResolver
                 }
 
                 // Return a converter for the flag element type.
-                return (TypeDescriptor.GetConverter(value.Type), GetStringConstructor(value.Type));
+                return (SafeTypeConverter.GetConverter(value.Type), GetStringConstructor(value.Type));
             }
 
             return (TypeDescriptor.GetConverter(parameter.ParameterType), GetStringConstructor(parameter.ParameterType));

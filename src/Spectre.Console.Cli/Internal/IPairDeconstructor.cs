@@ -13,10 +13,9 @@ internal interface IPairDeconstructor
     /// <param name="valueType">The value type.</param>
     /// <param name="value">The value to deconstruct.</param>
     /// <returns>A deconstructed value.</returns>
-    [RequiresUnreferencedCode("Uses GetConverter")]
     (object? Key, object? Value) Deconstruct(
         ITypeResolver resolver,
-        Type keyType,
-        Type valueType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type keyType,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type valueType,
         string? value);
 }

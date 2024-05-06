@@ -17,8 +17,6 @@ internal sealed class CommandTree
         Unmapped = new List<CommandParameter>();
     }
 
-    [RequiresUnreferencedCode("Complex type parsing")]
-    [RequiresDynamicCode("Creates new arrays")]
     public ICommand CreateCommand(ITypeResolver resolver)
     {
         if (Command.Delegate != null)

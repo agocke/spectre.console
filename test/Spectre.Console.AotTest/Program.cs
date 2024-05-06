@@ -12,7 +12,6 @@ var searchPathProp = typeof(FileSizeCommand.Settings).GetProperty(nameof(FileSiz
 var searchPatternProp = typeof(FileSizeCommand.Settings).GetProperty(nameof(FileSizeCommand.Settings.SearchPattern))!;
 var includeHiddenProp = typeof(FileSizeCommand.Settings).GetProperty(nameof(FileSizeCommand.Settings.IncludeHidden))!;
 
-#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
 IEnumerable<CommandOption> options = [
     BuildOptionParameter(searchPatternProp, typeof(string), searchPatternProp.GetCustomAttribute<CommandOptionAttribute>()!),
     BuildOptionParameter(includeHiddenProp, typeof(bool), includeHiddenProp.GetCustomAttribute<CommandOptionAttribute>()!),
@@ -20,9 +19,37 @@ IEnumerable<CommandOption> options = [
 IEnumerable<CommandArgument> arguments = [
     BuildArgumentParameter(searchPathProp, typeof(string), searchPathProp.GetCustomAttribute<CommandArgumentAttribute>()!),
 ];
-var app = new GeneratedCommandApp<FileSizeCommand>(new DefaultTypeRegistrar(), [(options, arguments)]);
-#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
+var app = new GeneratedCommandApp<FileSizeCommand>(
+    new DefaultTypeRegistrar(),
+    [(options, arguments)]);
+
 return app.Run(args);
+
+internal sealed class GeneratedBinder : IGeneratedCommandBinder
+{
+    private string? _searchPath = null;
+    private string? _searchPattern = null;
+    private bool _includeHidden = true;
+
+    public void BindMapped(IEnumerable<(CommandParameter Parameter, string? Value)> mapped)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void BindUnmapped(IEnumerable<CommandParameter> unmapped)
+    {
+        foreach (var parameter in unmapped)
+        {
+        }
+    }
+
+    public CommandSettings BuildSettings() => new FileSizeCommand.Settings
+    {
+        SearchPath = _searchPath,
+        SearchPattern = _searchPattern,
+        IncludeHidden = _includeHidden,
+    };
+}
 
 internal sealed class FileSizeCommand : Command<FileSizeCommand.Settings>
 {

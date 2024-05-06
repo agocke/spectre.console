@@ -2,8 +2,8 @@ namespace Spectre.Console.Cli;
 
 internal static class CommandConstructorBinder
 {
-    [RequiresUnreferencedCode("Can't preserve the containing type of the constructor")]
     [RequiresDynamicCode("Creates new arrays")]
+    [RequiresUnreferencedCode("Needs to preserve constructor info on property return values")]
     public static CommandSettings CreateSettings(CommandValueLookup lookup, ConstructorInfo constructor, ITypeResolver resolver)
     {
         if (constructor.DeclaringType == null)

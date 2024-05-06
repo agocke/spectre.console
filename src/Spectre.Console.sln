@@ -36,6 +36,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Cli.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spectre.Console.Json", "Spectre.Console.Json\Spectre.Console.Json.csproj", "{579E6E31-1E2F-4FE1-8F8C-9770878993E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spectre.Console.AotTest", "..\test\Spectre.Console.AotTest\Spectre.Console.AotTest.csproj", "{F4B22FD1-6DB1-4203-9C21-41201F33A065}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,18 @@ Global
 		{579E6E31-1E2F-4FE1-8F8C-9770878993E9}.Release|x64.Build.0 = Release|Any CPU
 		{579E6E31-1E2F-4FE1-8F8C-9770878993E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{579E6E31-1E2F-4FE1-8F8C-9770878993E9}.Release|x86.Build.0 = Release|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Debug|x64.Build.0 = Debug|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Debug|x86.Build.0 = Debug|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Release|x64.ActiveCfg = Release|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Release|x64.Build.0 = Release|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Release|x86.ActiveCfg = Release|Any CPU
+		{F4B22FD1-6DB1-4203-9C21-41201F33A065}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
