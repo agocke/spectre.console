@@ -161,7 +161,7 @@ internal static class GeneratedCommandValueResolver
         return result;
     }
 
-    [RequiresDynamicCode("Creates an array of converter.ConvertFrom().GetType() type")]
+    [RequiresDynamicCode("Creates array of type returned from converter")]
     private static Array ConvertArray(Array sourceArray, TypeConverter converter)
     {
         Array? targetArray = null;
@@ -182,7 +182,6 @@ internal static class GeneratedCommandValueResolver
         return targetArray ?? sourceArray;
     }
 
-    [RequiresUnreferencedCode("If parameter is an array, gets the converter for the element type")]
     private static (TypeConverter? Converter, ConstructorInfo? StringConstructor) GetConverter(CommandValueLookup lookup, GeneratedCommandValueBinder binder, ITypeResolver resolver, CommandParameter parameter)
     {
         static ConstructorInfo? GetStringConstructor([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type type)

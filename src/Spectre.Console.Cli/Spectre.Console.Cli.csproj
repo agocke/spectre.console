@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="StaticCs.TrimmableConverter" Version="1.0.0" />
     <ProjectReference Include="..\Spectre.Console\Spectre.Console.csproj" />
 
     <PackageReference Include="PolySharp" Version="1.13.2">
