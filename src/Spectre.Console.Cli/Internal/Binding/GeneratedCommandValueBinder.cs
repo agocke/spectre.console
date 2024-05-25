@@ -9,15 +9,17 @@ internal sealed class GeneratedCommandValueBinder
         _lookup = lookup;
     }
 
-    public void Bind(CommandParameter parameter, ITypeResolver resolver, object? value)
+    public void Bind(CommandParameter parameter, object? value)
     {
         if (parameter.ParameterKind == ParameterKind.Pair)
         {
-            value = GetLookup(parameter, resolver, value);
+            // value = GetLookup(parameter, resolver, value);
+            throw new NotSupportedException("Pair parameters are not supported when trimming.");
         }
         else if (parameter.ParameterKind == ParameterKind.Vector)
         {
-            value = GetArray(parameter, value);
+            // value = GetArray(parameter, value);
+            throw new NotSupportedException("Vector parameters are not supported when trimming.");
         }
         else if (parameter.ParameterKind == ParameterKind.FlagWithValue)
         {
@@ -25,127 +27,6 @@ internal sealed class GeneratedCommandValueBinder
         }
 
         _lookup.SetValue(parameter, value);
-    }
-
-    public void BindSafe(CommandParameter parameter, ITypeResolver resolver, object? value)
-    {
-        if (parameter.ParameterKind == ParameterKind.Pair)
-        {
-            value = GetLookupSafe(parameter, resolver, value);
-        }
-        else if (parameter.ParameterKind == ParameterKind.Vector)
-        {
-            value = GetArray(parameter, value);
-        }
-        else if (parameter.ParameterKind == ParameterKind.FlagWithValue)
-        {
-            value = GetFlag(parameter, value);
-        }
-
-        _lookup.SetValue(parameter, value);
-    }
-
-    private object GetLookup(CommandParameter parameter, ITypeResolver resolver, object? value)
-    {
-        var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
-
-        var multimap = (IMultiMap?)_lookup.GetValue(parameter);
-        if (multimap == null)
-        {
-            multimap = Activator.CreateInstance(typeof(MultiMap<,>).MakeGenericType(genericTypes[0], genericTypes[1])) as IMultiMap;
-            if (multimap == null)
-            {
-                throw new InvalidOperationException("Could not create multimap");
-            }
-        }
-
-        // Create deconstructor.
-        var deconstructorType = parameter.PairDeconstructor?.Type ?? typeof(DefaultPairDeconstructor);
-        if (!(resolver.Resolve(deconstructorType) is IPairDeconstructor deconstructor))
-        {
-            if (!(Activator.CreateInstance(deconstructorType) is IPairDeconstructor activatedDeconstructor))
-            {
-                throw new InvalidOperationException($"Could not create pair deconstructor.");
-            }
-
-            deconstructor = activatedDeconstructor;
-        }
-
-        // Deconstruct and add to multimap.
-        var pair = deconstructor.Deconstruct(resolver, genericTypes[0], genericTypes[1], value as string);
-        if (pair.Key != null)
-        {
-            multimap.Add(pair);
-        }
-
-        return multimap;
-    }
-
-    private object GetLookupSafe(CommandParameter parameter, ITypeResolver resolver, object? value)
-    {
-        var genericTypes = parameter.Property.PropertyType.GetGenericArguments();
-
-        var multimap = (IMultiMap?)_lookup.GetValue(parameter);
-        if (multimap == null)
-        {
-            multimap = Activator.CreateInstance(typeof(MultiMap<,>).MakeGenericType(genericTypes[0], genericTypes[1])) as IMultiMap;
-            if (multimap == null)
-            {
-                throw new InvalidOperationException("Could not create multimap");
-            }
-        }
-
-        // Create deconstructor.
-        var deconstructorType = parameter.PairDeconstructor?.Type ?? typeof(DefaultPairDeconstructor);
-        if (!(resolver.Resolve(deconstructorType) is IPairDeconstructor deconstructor))
-        {
-            if (!(Activator.CreateInstance(deconstructorType) is IPairDeconstructor activatedDeconstructor))
-            {
-                throw new InvalidOperationException($"Could not create pair deconstructor.");
-            }
-
-            deconstructor = activatedDeconstructor;
-        }
-
-        // Deconstruct and add to multimap.
-        var pair = deconstructor.Deconstruct(resolver, genericTypes[0], genericTypes[1], value as string);
-        if (pair.Key != null)
-        {
-            multimap.Add(pair);
-        }
-
-        return multimap;
-    }
-
-    private object GetArray(CommandParameter parameter, object? value)
-    {
-        if (value is Array)
-        {
-            return value;
-        }
-
-        // Add a new item to the array
-        var array = (Array?)_lookup.GetValue(parameter);
-        Array newArray;
-
-        var elementType = parameter.Property.PropertyType.GetElementType();
-        if (elementType == null)
-        {
-            throw new InvalidOperationException("Could not get property type.");
-        }
-
-        if (array == null)
-        {
-            newArray = Array.CreateInstance(elementType, 1);
-        }
-        else
-        {
-            newArray = Array.CreateInstance(elementType, array.Length + 1);
-            array.CopyTo(newArray, 0);
-        }
-
-        newArray.SetValue(value, newArray.Length - 1);
-        return newArray;
     }
 
     private object GetFlag(CommandParameter parameter, object? value)

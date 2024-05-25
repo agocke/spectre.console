@@ -13,6 +13,9 @@ internal static class GeneratedCommandBinder
     {
         var lookup = GeneratedCommandValueResolver.GetParameterValues(tree, resolver);
 
+#pragma warning disable IL3050 // TODO: Fix the warnings
+#pragma warning disable IL2026 // RequiresUnreferencedCode
+
         // Got a constructor with at least one name corresponding to a settings?
         foreach (var constructor in settingsType.GetConstructors())
         {
@@ -31,5 +34,7 @@ internal static class GeneratedCommandBinder
         }
 
         return CommandPropertyBinder.CreateSettings(lookup, settingsType, resolver);
+#pragma warning restore IL3050
+#pragma warning restore IL2026
     }
 }

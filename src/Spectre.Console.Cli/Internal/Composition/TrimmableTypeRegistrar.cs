@@ -1,17 +1,17 @@
 namespace Spectre.Console.Cli;
 
-internal sealed class DefaultTypeRegistrar : ITypeRegistrar
+internal sealed class TrimmableTypeRegistrar : ITypeRegistrar
 {
     private readonly Queue<Action<ComponentRegistry>> _registry;
 
-    public DefaultTypeRegistrar()
+    public TrimmableTypeRegistrar()
     {
         _registry = new Queue<Action<ComponentRegistry>>();
     }
 
     public ITypeResolver Build()
     {
-        var container = new DefaultTypeResolver();
+        var container = new TrimmableTypeResolver();
         while (_registry.Count > 0)
         {
             var action = _registry.Dequeue();

@@ -5,7 +5,8 @@ public abstract class CommandParameter : ICommandParameterInfo, ICommandParamete
     public Guid Id { get; }
 
     [DynamicallyAccessedMembers(
-        DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+        DynamicallyAccessedMemberTypes.PublicConstructors
+        | DynamicallyAccessedMemberTypes.PublicFields
         | DynamicallyAccessedMemberTypes.Interfaces)]
     public Type ParameterType { get; }
     internal ParameterKind ParameterKind { get; }
@@ -27,7 +28,8 @@ public abstract class CommandParameter : ICommandParameterInfo, ICommandParamete
 
     private protected CommandParameter(
         [DynamicallyAccessedMembers(
-            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+            DynamicallyAccessedMemberTypes.PublicConstructors
+            | DynamicallyAccessedMemberTypes.PublicFields
             | DynamicallyAccessedMemberTypes.Interfaces)]
         Type parameterType, ParameterKind parameterKind, PropertyInfo property,
         string? description, TypeConverterAttribute? converter,

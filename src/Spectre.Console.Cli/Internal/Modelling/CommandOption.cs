@@ -10,7 +10,8 @@ public sealed class CommandOption : CommandParameter, ICommandOption
 
     internal CommandOption(
         [DynamicallyAccessedMembers(
-            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
+            DynamicallyAccessedMemberTypes.PublicConstructors
+            | DynamicallyAccessedMemberTypes.PublicFields
             | DynamicallyAccessedMemberTypes.Interfaces)]
         Type parameterType, ParameterKind parameterKind, PropertyInfo property, string? description,
         TypeConverterAttribute? converter, PairDeconstructorAttribute? deconstructor,

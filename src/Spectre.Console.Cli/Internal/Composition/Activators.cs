@@ -1,12 +1,10 @@
-using System.Runtime.CompilerServices;
-
 namespace Spectre.Console.Cli;
 
 internal abstract class ComponentActivator
 {
-    [RequiresUnreferencedCode("Complex type parsing")]
-    [RequiresDynamicCode("Creates new arrays")]
+    [RequiresUnreferencedCode("DefaultTypeResolver is not trim compatible")]
     public abstract object Activate(DefaultTypeResolver container);
+    public abstract object Activate(TrimmableTypeResolver container);
 
     public abstract ComponentActivator CreateCopy();
 }
@@ -22,9 +20,13 @@ internal class CachingActivator : ComponentActivator
         _result = null;
     }
 
-    [RequiresUnreferencedCode("Complex type parsing")]
-    [RequiresDynamicCode("Creates new arrays")]
+    [RequiresUnreferencedCode("DefaultTypeResolver is not trim compatible")]
     public override object Activate(DefaultTypeResolver container)
+    {
+        return _result ??= _activator.Activate(container);
+    }
+
+    public override object Activate(TrimmableTypeResolver container)
     {
         return _result ??= _activator.Activate(container);
     }
@@ -44,9 +46,13 @@ internal sealed class InstanceActivator : ComponentActivator
         _instance = instance;
     }
 
-    [RequiresUnreferencedCode("Complex type parsing")]
-    [RequiresDynamicCode("Creates new arrays")]
+    [RequiresUnreferencedCode("DefaultTypeResolver is not trim compatible")]
     public override object Activate(DefaultTypeResolver container)
+    {
+        return _instance;
+    }
+
+    public override object Activate(TrimmableTypeResolver container)
     {
         return _instance;
     }
@@ -78,8 +84,18 @@ internal sealed class ReflectionActivator : ComponentActivator
         }
     }
 
-    [RequiresUnreferencedCode("Binding is incompatible with trimming")]
-    [RequiresDynamicCode("Creates new arrays")]
+    public ReflectionActivator(
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)]
+        Type type,
+        ConstructorInfo constructor,
+        List<ParameterInfo> parameters)
+    {
+        _type = type;
+        _constructor = constructor;
+        _parameters = parameters;
+    }
+
+    [RequiresUnreferencedCode("DefaultTypeResolver is not trim compatible")]
     public override object Activate(DefaultTypeResolver container)
     {
         var parameters = new object?[_parameters.Count];
@@ -87,6 +103,38 @@ internal sealed class ReflectionActivator : ComponentActivator
         {
             var parameter = _parameters[i];
             if (parameter.ParameterType == typeof(DefaultTypeResolver))
+            {
+                parameters[i] = container;
+            }
+            else
+            {
+                var resolved = container.Resolve(parameter.ParameterType);
+                if (resolved == null)
+                {
+                    if (!parameter.IsOptional)
+                    {
+                        throw new InvalidOperationException($"Could not find registration for '{parameter.ParameterType.FullName}'.");
+                    }
+
+                    parameters[i] = null;
+                }
+                else
+                {
+                    parameters[i] = resolved;
+                }
+            }
+        }
+
+        return _constructor.Invoke(parameters);
+    }
+
+    public override object Activate(TrimmableTypeResolver container)
+    {
+        var parameters = new object?[_parameters.Count];
+        for (var i = 0; i < _parameters.Count; i++)
+        {
+            var parameter = _parameters[i];
+            if (parameter.ParameterType == typeof(TrimmableTypeResolver))
             {
                 parameters[i] = container;
             }

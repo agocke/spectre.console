@@ -1,3 +1,6 @@
+using StaticCs;
+using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
+
 namespace Spectre.Console.Cli;
 
 [SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes")]
@@ -6,8 +9,8 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
     /// <inheritdoc/>
     (object? Key, object? Value) IPairDeconstructor.Deconstruct(
         ITypeResolver resolver,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type keyType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type valueType,
+        [DAM(ConverterAnnotation)] Type keyType,
+        [DAM(ConverterAnnotation)] Type valueType,
         string? value)
     {
         if (value == null)
@@ -43,7 +46,7 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
         return (Parse(stringkey, keyType), Parse(stringValue, valueType));
     }
 
-    private static object? Parse(string value, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type targetType)
+    private static object? Parse(string value, [DAM(ConverterAnnotation)] Type targetType)
     {
         try
         {
@@ -57,10 +60,11 @@ internal sealed class DefaultPairDeconstructor : IPairDeconstructor
         }
     }
 
-    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
-    private static TypeConverter GetConverter([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
+    internal const DynamicallyAccessedMemberTypes ConverterAnnotation = DynamicallyAccessedMemberTypes.PublicParameterlessConstructor | DynamicallyAccessedMemberTypes.PublicFields;
+
+    private static TypeConverter GetConverter([DAM(ConverterAnnotation)] Type type)
     {
-        var converter = TypeDescriptor.GetConverter(type);
+        var converter = TrimmableTypeConverter.GetConverter(type);
         if (converter != null)
         {
             return converter;

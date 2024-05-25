@@ -2,6 +2,10 @@ namespace Spectre.Console.Cli;
 
 public static class CommandModelBuilder
 {
+    public const DynamicallyAccessedMemberTypes PropertyTypeAnnotations = DynamicallyAccessedMemberTypes.PublicConstructors
+        | DynamicallyAccessedMemberTypes.PublicFields
+        | DynamicallyAccessedMemberTypes.Interfaces;
+
     // Consider removing this in favor for value tuples at some point.
     private sealed class OrderedProperties
     {
@@ -263,9 +267,7 @@ public static class CommandModelBuilder
 
     public static CommandOption BuildOptionParameter(
         PropertyInfo property,
-        [DynamicallyAccessedMembers(
-            DynamicallyAccessedMemberTypes.PublicParameterlessConstructor
-            | DynamicallyAccessedMemberTypes.Interfaces)]
+        [DynamicallyAccessedMembers(PropertyTypeAnnotations)]
         Type propertyType,
         CommandOptionAttribute attribute)
     {
@@ -314,10 +316,7 @@ public static class CommandModelBuilder
 
     public static CommandArgument BuildArgumentParameter(
         PropertyInfo property,
-        [DynamicallyAccessedMembers(
-            DynamicallyAccessedMemberTypes.PublicProperties
-            | DynamicallyAccessedMemberTypes.PublicConstructors
-            | DynamicallyAccessedMemberTypes.Interfaces)]
+        [DynamicallyAccessedMembers(CommandModelBuilder.PropertyTypeAnnotations)]
         Type propertyType,
         CommandArgumentAttribute attribute)
     {

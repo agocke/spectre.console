@@ -1,3 +1,5 @@
+using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -13,6 +15,8 @@ public interface IFlagValue
     /// <summary>
     /// Gets the flag's element type.
     /// </summary>
+    [DAM(DynamicallyAccessedMemberTypes.PublicConstructors
+        | DynamicallyAccessedMemberTypes.PublicFields)]
     Type Type { get; }
 
     /// <summary>

@@ -1,3 +1,5 @@
+using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -15,7 +17,7 @@ internal interface IPairDeconstructor
     /// <returns>A deconstructed value.</returns>
     (object? Key, object? Value) Deconstruct(
         ITypeResolver resolver,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type keyType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type valueType,
+        [DAM(DefaultPairDeconstructor.ConverterAnnotation)] Type keyType,
+        [DAM(DefaultPairDeconstructor.ConverterAnnotation)] Type valueType,
         string? value);
 }

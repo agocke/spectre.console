@@ -1,10 +1,12 @@
+using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
 /// Implementation of a flag with an optional value.
 /// </summary>
 /// <typeparam name="T">The flag's element type.</typeparam>
-public sealed class FlagValue<T> : IFlagValue
+public sealed class FlagValue<[DAM(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicFields)] T> : IFlagValue
 {
     /// <summary>
     /// Gets or sets a value indicating whether or not the flag was set or not.
@@ -19,6 +21,8 @@ public sealed class FlagValue<T> : IFlagValue
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
     /// <inheritdoc/>
+    [DAM(DynamicallyAccessedMemberTypes.PublicConstructors
+        | DynamicallyAccessedMemberTypes.PublicFields)]
     Type IFlagValue.Type => typeof(T);
 
     /// <inheritdoc/>

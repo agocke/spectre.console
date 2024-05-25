@@ -19,37 +19,9 @@ IEnumerable<CommandOption> options = [
 IEnumerable<CommandArgument> arguments = [
     BuildArgumentParameter(searchPathProp, typeof(string), searchPathProp.GetCustomAttribute<CommandArgumentAttribute>()!),
 ];
-var app = new GeneratedCommandApp<FileSizeCommand>(
-    new DefaultTypeRegistrar(),
-    [(options, arguments)]);
+var app = new GeneratedCommandApp<FileSizeCommand>([(options, arguments)]);
 
 return app.Run(args);
-
-internal sealed class GeneratedBinder : IGeneratedCommandBinder
-{
-    private string? _searchPath = null;
-    private string? _searchPattern = null;
-    private bool _includeHidden = true;
-
-    public void BindMapped(IEnumerable<(CommandParameter Parameter, string? Value)> mapped)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void BindUnmapped(IEnumerable<CommandParameter> unmapped)
-    {
-        foreach (var parameter in unmapped)
-        {
-        }
-    }
-
-    public CommandSettings BuildSettings() => new FileSizeCommand.Settings
-    {
-        SearchPath = _searchPath,
-        SearchPattern = _searchPattern,
-        IncludeHidden = _includeHidden,
-    };
-}
 
 internal sealed class FileSizeCommand : Command<FileSizeCommand.Settings>
 {

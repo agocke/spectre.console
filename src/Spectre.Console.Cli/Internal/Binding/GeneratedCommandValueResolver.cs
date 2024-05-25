@@ -1,28 +1,10 @@
+using StaticCs;
+using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
+
 namespace Spectre.Console.Cli;
 
 internal static class GeneratedCommandValueResolver
 {
-    public static CommandValueLookup GetParameterValues(IGeneratedCommandBinder genBinder, CommandTree? tree, ITypeResolver resolver)
-    {
-        var lookup = new CommandValueLookup();
-        var binder = new GeneratedCommandValueBinder(lookup);
-
-        CommandValidator.ValidateRequiredParameters(tree);
-
-        while (tree != null)
-        {
-            // Process unmapped parameters.
-            genBinder.BindUnmapped(tree.Unmapped);
-
-            // Process mapped parameters.
-            genBinder.BindMapped(tree.Mapped.Select(m => (m.Parameter, m.Value)));
-
-            tree = tree.Next;
-        }
-
-        return lookup;
-    }
-
     public static CommandValueLookup GetParameterValues(CommandTree? tree, ITypeResolver resolver)
     {
         var lookup = new CommandValueLookup();
@@ -63,7 +45,7 @@ internal static class GeneratedCommandValueResolver
                         var value = parameter.DefaultValue?.Value;
                         value = ConvertValue(resolver, lookup, binder, parameter, value);
 
-                        binder.Bind(parameter, resolver, value);
+                        binder.Bind(parameter, value);
                         CommandValidator.ValidateParameter(parameter, lookup, resolver);
                     }
                     else if (Nullable.GetUnderlyingType(parameter.ParameterType) != null ||
@@ -80,7 +62,7 @@ internal static class GeneratedCommandValueResolver
                 if (mapped.Parameter.WantRawValue)
                 {
                     // Just try to assign the raw value.
-                    binder.Bind(mapped.Parameter, resolver, mapped.Value);
+                    binder.Bind(mapped.Parameter, mapped.Value);
                 }
                 else
                 {
@@ -89,12 +71,12 @@ internal static class GeneratedCommandValueResolver
                         if (mapped.Parameter is CommandOption option && option.DefaultValue != null)
                         {
                             // Set the default value.
-                            binder.Bind(mapped.Parameter, resolver, option.DefaultValue?.Value);
+                            binder.Bind(mapped.Parameter, option.DefaultValue?.Value);
                         }
                         else
                         {
                             // Set the flag but not the value.
-                            binder.Bind(mapped.Parameter, resolver, null);
+                            binder.Bind(mapped.Parameter, null);
                         }
                     }
                     else
@@ -124,7 +106,7 @@ internal static class GeneratedCommandValueResolver
                         }
 
                         // Assign the value to the parameter.
-                        binder.Bind(mapped.Parameter, resolver, value);
+                        binder.Bind(mapped.Parameter, value);
                     }
                 }
 
@@ -154,15 +136,15 @@ internal static class GeneratedCommandValueResolver
             var (converter, _) = GetConverter(lookup, binder, resolver, parameter);
             if (converter != null)
             {
-                result = result is Array array ? ConvertArray(array, converter) : converter.ConvertFrom(result);
+                result = result is Array array ? ConvertArray(array, parameter.ParameterType, converter) : converter.ConvertFrom(result);
             }
         }
 
         return result;
     }
 
-    [RequiresDynamicCode("Creates array of type returned from converter")]
-    private static Array ConvertArray(Array sourceArray, TypeConverter converter)
+    [UnconditionalSuppressMessage("DynamicCode", "IL3050:RequiresDynamicCode", Justification = "The array created is of the parameter's type, which must be an array.")]
+    private static Array ConvertArray(Array sourceArray, [DAM(DynamicallyAccessedMemberTypes.PublicConstructors)] Type parameterType, TypeConverter converter)
     {
         Array? targetArray = null;
         for (var i = 0; i < sourceArray.Length; i++)
@@ -173,7 +155,14 @@ internal static class GeneratedCommandValueResolver
                 var converted = converter.ConvertFrom(item);
                 if (converted != null)
                 {
-                    targetArray ??= Array.CreateInstance(converted.GetType(), sourceArray.Length);
+                    var convertedType = converted.GetType();
+                    if (convertedType != parameterType.GetElementType())
+                    {
+                        throw new InvalidOperationException($"Invalid array element type. Expected {parameterType.GetElementType()}, but got {convertedType}.");
+                    }
+
+                    // In 9.0 this could use Array.CreateInstanceFromArrayType
+                    targetArray ??= Array.CreateInstance(parameterType.GetElementType()!, sourceArray.Length);
                     targetArray.SetValue(converted, i);
                 }
             }
@@ -195,13 +184,14 @@ internal static class GeneratedCommandValueResolver
             if (parameter.ParameterType.IsArray)
             {
                 // Return a converter for each array item (not the whole array)
-                var elementType = parameter.ParameterType.GetElementType();
-                if (elementType == null)
-                {
-                    throw new InvalidOperationException("Could not get element type");
-                }
+                // var elementType = parameter.ParameterType.GetElementType();
+                // if (elementType == null)
+                // {
+                //     throw new InvalidOperationException("Could not get element type");
+                // }
 
-                return (SafeTypeConverter.GetConverter(elementType), GetStringConstructor(elementType));
+                // return (TrimmableTypeConverter.GetConverter(elementType), GetStringConstructor(elementType));
+                throw new NotSupportedException("Array conversion is not supported when trimming.");
             }
 
             if (parameter.IsFlagValue())
@@ -212,7 +202,7 @@ internal static class GeneratedCommandValueResolver
                 {
                     // Try to assign it with a null value.
                     // This will create the optional value instance without a value.
-                    binder.Bind(parameter, resolver, null);
+                    binder.Bind(parameter, null);
                     value = lookup.GetValue(parameter) as IFlagValue;
                     if (value == null)
                     {
@@ -221,10 +211,10 @@ internal static class GeneratedCommandValueResolver
                 }
 
                 // Return a converter for the flag element type.
-                return (SafeTypeConverter.GetConverter(value.Type), GetStringConstructor(value.Type));
+                return (TrimmableTypeConverter.GetConverter(value.Type), GetStringConstructor(value.Type));
             }
 
-            return (TypeDescriptor.GetConverter(parameter.ParameterType), GetStringConstructor(parameter.ParameterType));
+            return (TrimmableTypeConverter.GetConverter(parameter.ParameterType), GetStringConstructor(parameter.ParameterType));
         }
 
         var type = Type.GetType(parameter.Converter.ConverterTypeName);

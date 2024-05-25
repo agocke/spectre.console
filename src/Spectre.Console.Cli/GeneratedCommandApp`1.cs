@@ -18,11 +18,10 @@ public sealed class GeneratedCommandApp<[DynamicallyAccessedMembers(
     /// <summary>
     /// Initializes a new instance of the <see cref="GeneratedCommandApp{TDefaultCommand}"/> class.
     /// </summary>
-    /// <param name="registrar">The registrar.</param>
     /// <param name="optionsAndArgs">The options and arguments.</param>
-    public GeneratedCommandApp(ITypeRegistrar registrar, OptionsAndArgs optionsAndArgs)
+    public GeneratedCommandApp(OptionsAndArgs optionsAndArgs)
     {
-        _app = new GeneratedCommandApp(registrar);
+        _app = new GeneratedCommandApp(new TrimmableTypeRegistrar());
         _defaultCommandConfigurator = _app.SetDefaultCommand<TDefaultCommand>(optionsAndArgs);
     }
 

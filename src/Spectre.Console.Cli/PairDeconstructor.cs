@@ -1,3 +1,5 @@
+using DAM = System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute;
+
 namespace Spectre.Console.Cli;
 
 /// <summary>
@@ -17,8 +19,8 @@ public abstract class PairDeconstructor<TKey, TValue> : IPairDeconstructor
     /// <inheritdoc/>
     (object? Key, object? Value) IPairDeconstructor.Deconstruct(
         ITypeResolver resolver,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type keyType,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type valueType,
+        [DAM(DefaultPairDeconstructor.ConverterAnnotation)] Type keyType,
+        [DAM(DefaultPairDeconstructor.ConverterAnnotation)] Type valueType,
         string? value)
     {
         if (!keyType.IsAssignableFrom(typeof(TKey)) || !valueType.IsAssignableFrom(typeof(TValue)))
